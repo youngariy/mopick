@@ -11,6 +11,7 @@
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:elevation="100dp"
+        app:cardBackgroundColor="@color/colorSurface"
         app:cardCornerRadius="45dp">
 
         <ImageView

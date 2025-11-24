@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorMovieDetailBackground">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,7 +23,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="12dp"
-                android:background="@drawable/bg_section_header"
+                android:background="@drawable/bg_section_header_movie_dark"
                 android:visibility="gone">
 
                 <TextView
@@ -30,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:text="@string/now_showing"
-                    android:textColor="@color/colorOnSurface"
+                    android:textColor="@color/colorMovieDetailTextPrimary"
                     android:textSize="21sp"
                     android:textStyle="bold" />
 
@@ -61,7 +62,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="12dp"
-                android:background="@drawable/bg_section_header"
+                android:background="@drawable/bg_section_header_movie_dark"
                 android:visibility="gone">
 
                 <TextView
@@ -69,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:text="@string/popular"
-                    android:textColor="@color/colorOnSurface"
+                    android:textColor="@color/colorMovieDetailTextPrimary"
                     android:textSize="21sp"
                     android:textStyle="bold" />
 
@@ -100,7 +101,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="12dp"
-                android:background="@drawable/bg_section_header"
+                android:background="@drawable/bg_section_header_movie_dark"
                 android:visibility="gone">
 
                 <TextView
@@ -108,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:text="@string/upcoming"
-                    android:textColor="@color/colorOnSurface"
+                    android:textColor="@color/colorMovieDetailTextPrimary"
                     android:textSize="21sp"
                     android:textStyle="bold" />
 
@@ -139,7 +140,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="12dp"
-                android:background="@drawable/bg_section_header"
+                android:background="@drawable/bg_section_header_movie_dark"
                 android:visibility="gone">
 
                 <TextView
@@ -147,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:text="@string/top_rated"
-                    android:textColor="@color/colorOnSurface"
+                    android:textColor="@color/colorMovieDetailTextPrimary"
                     android:textSize="21sp"
                     android:textStyle="bold" />
 
@@ -180,6 +181,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:indeterminateTint="@color/colorAccent"
         android:visibility="gone" />
 
 </FrameLayout>

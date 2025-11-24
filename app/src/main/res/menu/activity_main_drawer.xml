@@ -7,12 +7,12 @@
         <item
             android:id="@+id/nav_movies"
             android:icon="@mipmap/ic_movie_black_24dp"
-            android:iconTint="@android:color/darker_gray"
+            android:iconTint="@color/colorSubtleText"
             android:title="@string/movies" />
         <item
             android:id="@+id/nav_tv_shows"
             android:icon="@mipmap/ic_tv_black_24dp"
-            android:iconTint="@android:color/darker_gray"
+            android:iconTint="@color/colorSubtleText"
             android:title="@string/tv_shows" />
     </group>
 
@@ -22,7 +22,7 @@
         <item
             android:id="@+id/nav_favorites"
             android:icon="@mipmap/ic_favorite_black_24dp"
-            android:iconTint="@android:color/darker_gray"
+            android:iconTint="@color/colorSubtleText"
             android:title="@string/favorites" />
     </group>
 
@@ -32,7 +32,7 @@
         <item
             android:id="@+id/nav_about"
             android:icon="@mipmap/ic_info_outline_black_24dp"
-            android:iconTint="@android:color/darker_gray"
+            android:iconTint="@color/colorSubtleText"
             android:title="@string/about" />
     </group>
 

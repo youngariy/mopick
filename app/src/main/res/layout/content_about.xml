@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorMovieDetailBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.hitanshudhawan.popcorn.activities.AboutActivity"
     tools:showIn="@layout/activity_about">
@@ -26,6 +27,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:elevation="100dp"
+            app:cardBackgroundColor="@color/colorSurface"
             app:cardCornerRadius="4dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,7 +55,7 @@
                         android:layout_gravity="center"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:src="@mipmap/ic_share_black_36dp"
-                        app:tint="?android:attr/textColorSecondary" />
+                        app:tint="@color/colorSubtleText" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -85,7 +87,7 @@
                         android:layout_gravity="center"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:src="@mipmap/ic_star_black_36dp"
-                        app:tint="?android:attr/textColorSecondary" />
+                        app:tint="@color/colorSubtleText" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -117,7 +119,7 @@
                         android:layout_gravity="center"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:src="@mipmap/ic_feedback_black_36dp"
-                        app:tint="?android:attr/textColorSecondary" />
+                        app:tint="@color/colorSubtleText" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -142,6 +144,7 @@
             android:elevation="100dp"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/colorSurface"
             app:cardCornerRadius="4dp">
 
             <LinearLayout
@@ -155,7 +158,7 @@
                     android:layout_height="36dp"
                     android:layout_marginRight="16dp"
                     android:src="@drawable/github_mark_64px"
-                    app:tint="?android:attr/textColorSecondary" />
+                    app:tint="@color/colorSubtleText" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -174,6 +177,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:elevation="100dp"
+            app:cardBackgroundColor="@color/colorSurface"
             app:cardCornerRadius="4dp">
 
             <LinearLayout
@@ -200,7 +204,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@android:color/darker_gray" />
+                    android:background="@color/colorDivider" />
 
                 <TextView
                     android:layout_width="wrap_content"

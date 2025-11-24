@@ -3,6 +3,9 @@ package com.hitanshudhawan.popcorn.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.view.Window;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -13,6 +16,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.hitanshudhawan.popcorn.R;
@@ -25,20 +31,28 @@ import com.hitanshudhawan.popcorn.utils.NetworkConnection;
 public class MainActivity extends AppCompatActivity {
 
     private boolean doubleBackToExitPressedOnce;
+    private Toolbar mToolbar;
+    private com.google.android.material.bottomnavigation.BottomNavigationView mBottomNavigation;
+    private ColorStateList mDefaultNavIconTint;
+    private ColorStateList mDefaultNavTextTint;
+    private final int mDefaultBottomNavBackground = R.drawable.bg_bottom_nav;
 
     private BottomNavigationView.OnItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
         switch (item.getItemId()) {
             case R.id.nav_movies:
                 setTitle(R.string.movies);
+                applyMoviesChrome();
                 setFragment(new MoviesFragment());
                 return true;
             case R.id.nav_tv_shows:
                 setTitle(R.string.tv_shows);
+                applyDefaultChrome();
                 setFragment(new TVShowsFragment());
                 return true;
             case R.id.nav_favorites:
                 setTitle(R.string.favorites);
+                applyDefaultChrome();
                 setFragment(new FavouritesFragment());
                 return true;
         }
@@ -50,14 +64,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
-        BottomNavigationView navigation = findViewById(R.id.bottom_navigation);
-        navigation.setOnItemSelectedListener(mOnNavigationItemSelectedListener);
+        mBottomNavigation = findViewById(R.id.bottom_navigation);
+        mDefaultNavIconTint = mBottomNavigation.getItemIconTintList();
+        mDefaultNavTextTint = mBottomNavigation.getItemTextColor();
+        mBottomNavigation.setOnItemSelectedListener(mOnNavigationItemSelectedListener);
 
         // Set default fragment
         setTitle(R.string.movies);
+        applyMoviesChrome();
         setFragment(new MoviesFragment());
     }
 
@@ -120,5 +137,42 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_activity_fragment_container, fragment);
         fragmentTransaction.commit();
+    }
+
+    private void applyMoviesChrome() {
+        if (mToolbar != null) {
+            mToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorMovieDetailSurface));
+            mToolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.colorMovieDetailTextPrimary));
+        }
+        if (mBottomNavigation != null) {
+            mBottomNavigation.setBackgroundResource(R.drawable.bg_bottom_nav_dark);
+            ColorStateList darkStateList = ContextCompat.getColorStateList(this, R.color.bottom_nav_selector_dark);
+            mBottomNavigation.setItemIconTintList(darkStateList);
+            mBottomNavigation.setItemTextColor(darkStateList);
+        }
+        Window window = getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorMovieDetailBackground));
+        WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(window, window.getDecorView());
+        if (insetsController != null) {
+            insetsController.setAppearanceLightStatusBars(false);
+        }
+    }
+
+    private void applyDefaultChrome() {
+        if (mToolbar != null) {
+            mToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            mToolbar.setTitleTextColor(Color.WHITE);
+        }
+        if (mBottomNavigation != null) {
+            mBottomNavigation.setBackgroundResource(mDefaultBottomNavBackground);
+            mBottomNavigation.setItemIconTintList(mDefaultNavIconTint);
+            mBottomNavigation.setItemTextColor(mDefaultNavTextTint);
+        }
+        Window window = getWindow();
+        window.setStatusBarColor(Color.TRANSPARENT);
+        WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(window, window.getDecorView());
+        if (insetsController != null) {
+            insetsController.setAppearanceLightStatusBars(true);
+        }
     }
 }

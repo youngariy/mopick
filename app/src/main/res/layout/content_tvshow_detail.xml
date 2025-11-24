@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorMovieDetailBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.hitanshudhawan.popcorn.activities.TVShowDetailActivity"
     tools:showIn="@layout/activity_tvshow_detail">
@@ -35,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="4dp"
+                android:textColor="@color/colorMovieDetailTextPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -42,6 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
+                android:textColor="@color/colorMovieDetailTextSecondary"
                 android:text="/10"
                 android:textSize="14sp" />
 
@@ -55,7 +58,8 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
             android:ellipsize="end"
-            android:maxLines="7" />
+            android:maxLines="7"
+            android:textColor="@color/colorMovieDetailTextPrimary" />
 
         <TextView
             android:id="@+id/text_view_read_more_tv_show_detail"
@@ -80,13 +84,14 @@
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="5sp"
                 android:text="@string/tv_show_details"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/colorMovieDetailTextPrimary" />
 
             <TextView
                 android:id="@+id/text_view_details_tv_show_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lineSpacingExtra="5sp" />
+                android:lineSpacingExtra="5sp"
+                android:textColor="@color/colorMovieDetailTextSecondary" />
 
         </LinearLayout>
 
@@ -98,7 +103,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/videos"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorMovieDetailTextPrimary"
             android:textSize="20sp"
             android:visibility="gone" />
 
@@ -113,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
-            android:background="@android:color/darker_gray"
+            android:background="@color/colorMovieDetailDivider"
             android:visibility="gone" />
 
         <TextView
@@ -124,7 +129,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/cast"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorMovieDetailTextPrimary"
             android:textSize="20sp"
             android:visibility="gone" />
 
@@ -142,7 +147,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/similar_tv_shows"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorMovieDetailTextPrimary"
             android:textSize="20sp"
             android:visibility="gone" />
 

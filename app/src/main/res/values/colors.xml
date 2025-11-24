@@ -4,14 +4,21 @@
     <color name="colorPrimaryDark">#E14D2A</color>
     <color name="colorAccent">#FFC857</color>
 
-    <color name="colorBackground">#F6F0E8</color>
-    <color name="colorSurface">#FFFFFF</color>
-    <color name="colorOnSurface">#1F2430</color>
-    <color name="colorSubtleText">#6C7480</color>
-    <color name="colorDivider">#FFE6D7</color>
+    <color name="colorBackground">#0E1119</color>
+    <color name="colorSurface">#161B25</color>
+    <color name="colorOnSurface">#F2F4F8</color>
+    <color name="colorSubtleText">#C5CAD6</color>
+    <color name="colorDivider">#2A303C</color>
 
-    <color name="colorNavigationHeaderBackground">#252A39</color>
-    <color name="colorNavigationDrawerBackgroud">#F6F0E8</color>
+    <color name="colorNavigationHeaderBackground">#121826</color>
+    <color name="colorNavigationDrawerBackgroud">#0E1119</color>
 
-    <color name="colorAboutSectionIcons">#6C7480</color>
+    <color name="colorAboutSectionIcons">#C5CAD6</color>
+
+    <!-- Movie detail dark theme colors -->
+    <color name="colorMovieDetailBackground">#0E1119</color>
+    <color name="colorMovieDetailSurface">#161B25</color>
+    <color name="colorMovieDetailTextPrimary">#F2F4F8</color>
+    <color name="colorMovieDetailTextSecondary">#C5CAD6</color>
+    <color name="colorMovieDetailDivider">#2A303C</color>
 </resources>

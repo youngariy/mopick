@@ -20,11 +20,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/bg_bottom_nav"
+        android:background="@drawable/bg_bottom_nav_dark"
         android:elevation="10dp"
-        app:itemIconTint="@color/bottom_nav_selector"
+        app:itemIconTint="@color/bottom_nav_selector_dark"
         app:itemRippleColor="@color/colorAccent"
-        app:itemTextColor="@color/bottom_nav_selector"
+        app:itemTextColor="@color/bottom_nav_selector_dark"
         app:menu="@menu/bottom_nav_menu" />
 
 </RelativeLayout>
