@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.hitanshudhawan.popcorn.activities.ViewAllMoviesActivity"
-    tools:showIn="@layout/activity_view_all_movies">
+    android:background="@color/colorMovieDetailBackground"
+    tools:context="com.hitanshudhawan.popcorn.activities.ViewAllTVShowsActivity"
+    tools:showIn="@layout/activity_view_all_tvshows">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_view_all"

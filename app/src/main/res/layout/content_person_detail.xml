@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorMovieDetailBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.hitanshudhawan.popcorn.activities.PersonDetailActivity"
     tools:showIn="@layout/activity_person_detail">
@@ -19,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="@string/biography"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorMovieDetailTextPrimary"
             android:textSize="20sp"
             android:visibility="gone" />
 
@@ -30,7 +31,8 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:ellipsize="end"
-            android:maxLines="7" />
+            android:maxLines="7"
+            android:textColor="@color/colorMovieDetailTextPrimary" />
 
         <TextView
             android:id="@+id/text_view_read_more_person_detail"
@@ -39,7 +41,7 @@
             android:clickable="true"
             android:text="@string/read_more"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="?attr/colorPrimary"
             android:visibility="gone" />
 
         <TextView
@@ -51,7 +53,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/movie_cast"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorMovieDetailTextPrimary"
             android:textSize="20sp"
             android:visibility="gone" />
 
@@ -70,7 +72,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/tv_cast"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorMovieDetailTextPrimary"
             android:textSize="20sp"
             android:visibility="gone" />
 

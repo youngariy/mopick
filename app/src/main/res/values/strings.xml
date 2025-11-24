@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">PopCorn</string>
+    <string name="nav_tagline">Fresh picks, ready to binge</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -58,6 +59,7 @@
     <string name="person">Person</string>
 
     <string name="no_network">No internet connection</string>
+    <string name="error_loading_movies">Error loading movies</string>
 
     <string name="press_again_to_exit">Press again to exit</string>
 

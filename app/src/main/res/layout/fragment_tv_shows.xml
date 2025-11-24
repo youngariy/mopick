@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorMovieDetailBackground">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -12,17 +13,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
 
             <FrameLayout
                 android:id="@+id/layout_airing_today"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/bg_section_header"
                 android:visibility="gone">
 
                 <TextView
@@ -30,8 +31,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:text="@string/airing_today"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp" />
+                    android:textColor="@color/colorOnSurface"
+                    android:textSize="21sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/text_view_view_all_airing_today"
@@ -41,7 +43,8 @@
                     android:clickable="true"
                     android:text="@string/view_all"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
             </FrameLayout>
 
@@ -56,11 +59,10 @@
                 android:id="@+id/layout_on_the_air"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/bg_section_header"
                 android:visibility="gone">
 
                 <TextView
@@ -68,8 +70,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:text="@string/on_the_air"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp" />
+                    android:textColor="@color/colorOnSurface"
+                    android:textSize="21sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/text_view_view_all_on_the_air"
@@ -79,7 +82,8 @@
                     android:clickable="true"
                     android:text="@string/view_all"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
             </FrameLayout>
 
@@ -94,11 +98,10 @@
                 android:id="@+id/layout_popular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/bg_section_header"
                 android:visibility="gone">
 
                 <TextView
@@ -106,8 +109,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:text="@string/popular"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp" />
+                    android:textColor="@color/colorOnSurface"
+                    android:textSize="21sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/text_view_view_all_popular"
@@ -117,7 +121,8 @@
                     android:clickable="true"
                     android:text="@string/view_all"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
             </FrameLayout>
 
@@ -132,11 +137,10 @@
                 android:id="@+id/layout_top_rated"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/bg_section_header"
                 android:visibility="gone">
 
                 <TextView
@@ -144,8 +148,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:text="@string/top_rated"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp" />
+                    android:textColor="@color/colorOnSurface"
+                    android:textSize="21sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/text_view_view_all_top_rated"
@@ -155,7 +160,8 @@
                     android:clickable="true"
                     android:text="@string/view_all"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
             </FrameLayout>
 
@@ -175,6 +181,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:indeterminateTint="@color/colorAccent"
         android:visibility="gone" />
 
 </FrameLayout>

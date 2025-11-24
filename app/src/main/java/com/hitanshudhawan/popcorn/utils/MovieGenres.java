@@ -26,7 +26,8 @@ public class MovieGenres {
     }
 
     public static String getGenreName(Integer genreId) {
-        if (genreId == null) return null;
-        return genresMap.get(genreId);
+        if (genresMap == null || genreId == null) return "";
+        String genreName = genresMap.get(genreId);
+        return genreName != null ? genreName : "";
     }
 }

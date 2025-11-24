@@ -1,29 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorMovieDetailBackground"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp">
 
-    <com.ogaclejapan.smarttablayout.SmartTabLayout
-        android:id="@+id/tab_view_pager_fav"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        app:stl_defaultTabBackground="?attr/selectableItemBackground"
-        app:stl_defaultTabTextColor="@android:color/black"
-        app:stl_distributeEvenly="true"
-        app:stl_dividerThickness="0dp"
-        app:stl_drawDecorationAfterTab="true"
-        app:stl_indicatorColor="@color/colorAccent"
-        app:stl_indicatorCornerRadius="2dp"
-        app:stl_indicatorInterpolation="smart"
-        app:stl_indicatorThickness="4dp"
-        app:stl_overlineThickness="0dp"
-        app:stl_underlineThickness="0dp" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="12dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_fav_movies"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_weight="1"
+            android:background="@drawable/fav_toggle_active"
+            android:text="@string/movies"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="1dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_fav_tv"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_weight="1"
+            android:background="@drawable/fav_toggle_inactive"
+            android:text="@string/tv_shows"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager_fav"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp" />
 
 </LinearLayout>

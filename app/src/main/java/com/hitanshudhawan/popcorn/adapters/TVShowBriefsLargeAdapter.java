@@ -67,10 +67,8 @@ public class TVShowBriefsLargeAdapter extends RecyclerView.Adapter<TVShowBriefsL
 
         if (Favourite.isTVShowFav(mContext, mTVShows.get(position).getId())) {
             holder.tvShowFavImageButton.setImageResource(R.mipmap.ic_favorite_black_18dp);
-            holder.tvShowFavImageButton.setEnabled(false);
         } else {
             holder.tvShowFavImageButton.setImageResource(R.mipmap.ic_favorite_border_black_18dp);
-            holder.tvShowFavImageButton.setEnabled(true);
         }
     }
 
@@ -129,9 +127,13 @@ public class TVShowBriefsLargeAdapter extends RecyclerView.Adapter<TVShowBriefsL
                 @Override
                 public void onClick(View view) {
                     view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                    Favourite.addTVShowToFav(mContext, mTVShows.get(getAdapterPosition()).getId(), mTVShows.get(getAdapterPosition()).getPosterPath(), mTVShows.get(getAdapterPosition()).getName());
-                    tvShowFavImageButton.setImageResource(R.mipmap.ic_favorite_black_18dp);
-                    tvShowFavImageButton.setEnabled(false);
+                    if (Favourite.isTVShowFav(mContext, mTVShows.get(getAdapterPosition()).getId())) {
+                        Favourite.removeTVShowFromFav(mContext, mTVShows.get(getAdapterPosition()).getId());
+                        tvShowFavImageButton.setImageResource(R.mipmap.ic_favorite_border_black_18dp);
+                    } else {
+                        Favourite.addTVShowToFav(mContext, mTVShows.get(getAdapterPosition()).getId(), mTVShows.get(getAdapterPosition()).getPosterPath(), mTVShows.get(getAdapterPosition()).getName());
+                        tvShowFavImageButton.setImageResource(R.mipmap.ic_favorite_black_18dp);
+                    }
                 }
             });
         }

@@ -40,7 +40,7 @@ public class FavouriteMoviesFragment extends Fragment {
         mFavMovies = new ArrayList<>();
         mFavMoviesAdapter = new MovieBriefsSmallAdapter(getContext(), mFavMovies);
         mFavMoviesRecyclerView.setAdapter(mFavMoviesAdapter);
-        mFavMoviesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        mFavMoviesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         mEmptyLayout = (LinearLayout) view.findViewById(R.id.layout_recycler_view_fav_movies_empty);
 

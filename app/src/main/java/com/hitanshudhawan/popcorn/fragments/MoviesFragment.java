@@ -1,14 +1,7 @@
 package com.hitanshudhawan.popcorn.fragments;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,421 +10,185 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.hitanshudhawan.popcorn.R;
 import com.hitanshudhawan.popcorn.activities.ViewAllMoviesActivity;
 import com.hitanshudhawan.popcorn.adapters.MovieBriefsLargeAdapter;
 import com.hitanshudhawan.popcorn.adapters.MovieBriefsSmallAdapter;
-import com.hitanshudhawan.popcorn.broadcastreceivers.ConnectivityBroadcastReceiver;
-import com.hitanshudhawan.popcorn.network.ApiClient;
-import com.hitanshudhawan.popcorn.network.ApiInterface;
-import com.hitanshudhawan.popcorn.network.movies.GenresList;
 import com.hitanshudhawan.popcorn.network.movies.MovieBrief;
-import com.hitanshudhawan.popcorn.network.movies.NowShowingMoviesResponse;
-import com.hitanshudhawan.popcorn.network.movies.PopularMoviesResponse;
-import com.hitanshudhawan.popcorn.network.movies.TopRatedMoviesResponse;
-import com.hitanshudhawan.popcorn.network.movies.UpcomingMoviesResponse;
 import com.hitanshudhawan.popcorn.utils.Constants;
 import com.hitanshudhawan.popcorn.utils.MovieGenres;
 import com.hitanshudhawan.popcorn.utils.NetworkConnection;
+import com.hitanshudhawan.popcorn.viewmodels.MoviesViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-/**
- * Created by hitanshu on 30/7/17.
- */
-
-// hitanshu : MoviesFragment and TVShowsFragment are mostly similar
 public class MoviesFragment extends Fragment {
 
     private ProgressBar mProgressBar;
-    private boolean mNowShowingSectionLoaded;
-    private boolean mPopularSectionLoaded;
-    private boolean mUpcomingSectionLoaded;
-    private boolean mTopRatedSectionLoaded;
 
     private FrameLayout mNowShowingLayout;
-    private TextView mNowShowingViewAllTextView;
     private RecyclerView mNowShowingRecyclerView;
-    private List<MovieBrief> mNowShowingMovies;
     private MovieBriefsLargeAdapter mNowShowingAdapter;
+    private List<MovieBrief> mNowShowingMovies;
 
     private FrameLayout mPopularLayout;
-    private TextView mPopularViewAllTextView;
     private RecyclerView mPopularRecyclerView;
-    private List<MovieBrief> mPopularMovies;
     private MovieBriefsSmallAdapter mPopularAdapter;
+    private List<MovieBrief> mPopularMovies;
 
     private FrameLayout mUpcomingLayout;
-    private TextView mUpcomingViewAllTextView;
     private RecyclerView mUpcomingRecyclerView;
-    private List<MovieBrief> mUpcomingMovies;
     private MovieBriefsLargeAdapter mUpcomingAdapter;
+    private List<MovieBrief> mUpcomingMovies;
 
     private FrameLayout mTopRatedLayout;
-    private TextView mTopRatedViewAllTextView;
     private RecyclerView mTopRatedRecyclerView;
-    private List<MovieBrief> mTopRatedMovies;
     private MovieBriefsSmallAdapter mTopRatedAdapter;
+    private List<MovieBrief> mTopRatedMovies;
 
-    private Snackbar mConnectivitySnackbar;
-    private ConnectivityBroadcastReceiver mConnectivityBroadcastReceiver;
-    private boolean isBroadcastReceiverRegistered;
-    private boolean isFragmentLoaded;
-    private Call<GenresList> mGenresListCall;
-    private Call<NowShowingMoviesResponse> mNowShowingMoviesCall;
-    private Call<PopularMoviesResponse> mPopularMoviesCall;
-    private Call<UpcomingMoviesResponse> mUpcomingMoviesCall;
-    private Call<TopRatedMoviesResponse> mTopRatedMoviesCall;
+    private MoviesViewModel mMoviesViewModel;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movies, container, false);
 
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
-        mProgressBar.setVisibility(View.GONE);
-        mNowShowingSectionLoaded = false;
-        mPopularSectionLoaded = false;
-        mUpcomingSectionLoaded = false;
-        mTopRatedSectionLoaded = false;
+        initViews(view);
+        initAdapters();
+        initClickListeners(view);
 
-        mNowShowingLayout = (FrameLayout) view.findViewById(R.id.layout_now_showing);
-        mPopularLayout = (FrameLayout) view.findViewById(R.id.layout_popular);
-        mUpcomingLayout = (FrameLayout) view.findViewById(R.id.layout_upcoming);
-        mTopRatedLayout = (FrameLayout) view.findViewById(R.id.layout_top_rated);
-
-        mNowShowingViewAllTextView = (TextView) view.findViewById(R.id.text_view_view_all_now_showing);
-        mPopularViewAllTextView = (TextView) view.findViewById(R.id.text_view_view_all_popular);
-        mUpcomingViewAllTextView = (TextView) view.findViewById(R.id.text_view_view_all_upcoming);
-        mTopRatedViewAllTextView = (TextView) view.findViewById(R.id.text_view_view_all_top_rated);
-
-        mNowShowingRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_now_showing);
-        (new LinearSnapHelper()).attachToRecyclerView(mNowShowingRecyclerView);
-        mPopularRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_popular);
-        mUpcomingRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_upcoming);
-        (new LinearSnapHelper()).attachToRecyclerView(mUpcomingRecyclerView);
-        mTopRatedRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_top_rated);
-
-        mNowShowingMovies = new ArrayList<>();
-        mPopularMovies = new ArrayList<>();
-        mUpcomingMovies = new ArrayList<>();
-        mTopRatedMovies = new ArrayList<>();
-
-        mNowShowingAdapter = new MovieBriefsLargeAdapter(getContext(), mNowShowingMovies);
-        mPopularAdapter = new MovieBriefsSmallAdapter(getContext(), mPopularMovies);
-        mUpcomingAdapter = new MovieBriefsLargeAdapter(getContext(), mUpcomingMovies);
-        mTopRatedAdapter = new MovieBriefsSmallAdapter(getContext(), mTopRatedMovies);
-
-        mNowShowingRecyclerView.setAdapter(mNowShowingAdapter);
-        mNowShowingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-
-        mPopularRecyclerView.setAdapter(mPopularAdapter);
-        mPopularRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-
-        mUpcomingRecyclerView.setAdapter(mUpcomingAdapter);
-        mUpcomingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-
-        mTopRatedRecyclerView.setAdapter(mTopRatedAdapter);
-        mTopRatedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-
-        mNowShowingViewAllTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!NetworkConnection.isConnected(getContext())) {
-                    Toast.makeText(getContext(), R.string.no_network, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Intent intent = new Intent(getContext(), ViewAllMoviesActivity.class);
-                intent.putExtra(Constants.VIEW_ALL_MOVIES_TYPE, Constants.NOW_SHOWING_MOVIES_TYPE);
-                startActivity(intent);
-            }
-        });
-        mPopularViewAllTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!NetworkConnection.isConnected(getContext())) {
-                    Toast.makeText(getContext(), R.string.no_network, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Intent intent = new Intent(getContext(), ViewAllMoviesActivity.class);
-                intent.putExtra(Constants.VIEW_ALL_MOVIES_TYPE, Constants.POPULAR_MOVIES_TYPE);
-                startActivity(intent);
-            }
-        });
-        mUpcomingViewAllTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!NetworkConnection.isConnected(getContext())) {
-                    Toast.makeText(getContext(), R.string.no_network, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Intent intent = new Intent(getContext(), ViewAllMoviesActivity.class);
-                intent.putExtra(Constants.VIEW_ALL_MOVIES_TYPE, Constants.UPCOMING_MOVIES_TYPE);
-                startActivity(intent);
-            }
-        });
-        mTopRatedViewAllTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!NetworkConnection.isConnected(getContext())) {
-                    Toast.makeText(getContext(), R.string.no_network, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Intent intent = new Intent(getContext(), ViewAllMoviesActivity.class);
-                intent.putExtra(Constants.VIEW_ALL_MOVIES_TYPE, Constants.TOP_RATED_MOVIES_TYPE);
-                startActivity(intent);
-            }
-        });
+        mMoviesViewModel = new ViewModelProvider(this).get(MoviesViewModel.class);
 
         if (NetworkConnection.isConnected(getContext())) {
-            isFragmentLoaded = true;
-            loadFragment();
+            observeViewModel();
+            mMoviesViewModel.loadAllMovies(getString(R.string.MOVIE_DB_API_KEY), "US");
+            mProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            Toast.makeText(getContext(), R.string.no_network, Toast.LENGTH_LONG).show();
         }
 
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    private void initViews(View view) {
+        mProgressBar = view.findViewById(R.id.progress_bar);
+        mNowShowingLayout = view.findViewById(R.id.layout_now_showing);
+        mPopularLayout = view.findViewById(R.id.layout_popular);
+        mUpcomingLayout = view.findViewById(R.id.layout_upcoming);
+        mTopRatedLayout = view.findViewById(R.id.layout_top_rated);
 
-        mNowShowingAdapter.notifyDataSetChanged();
-        mPopularAdapter.notifyDataSetChanged();
-        mUpcomingAdapter.notifyDataSetChanged();
-        mTopRatedAdapter.notifyDataSetChanged();
+        mNowShowingRecyclerView = view.findViewById(R.id.recycler_view_now_showing);
+        new LinearSnapHelper().attachToRecyclerView(mNowShowingRecyclerView);
+        mPopularRecyclerView = view.findViewById(R.id.recycler_view_popular);
+        mUpcomingRecyclerView = view.findViewById(R.id.recycler_view_upcoming);
+        new LinearSnapHelper().attachToRecyclerView(mUpcomingRecyclerView);
+        mTopRatedRecyclerView = view.findViewById(R.id.recycler_view_top_rated);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    private void initAdapters() {
+        mNowShowingMovies = new ArrayList<>();
+        mNowShowingAdapter = new MovieBriefsLargeAdapter(getContext(), mNowShowingMovies);
+        mNowShowingRecyclerView.setAdapter(mNowShowingAdapter);
+        mNowShowingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        if (!isFragmentLoaded && !NetworkConnection.isConnected(getContext())) {
-            mConnectivitySnackbar = Snackbar.make(getActivity().findViewById(R.id.main_activity_fragment_container), R.string.no_network, Snackbar.LENGTH_INDEFINITE);
-            mConnectivitySnackbar.show();
-            mConnectivityBroadcastReceiver = new ConnectivityBroadcastReceiver(new ConnectivityBroadcastReceiver.ConnectivityReceiverListener() {
-                @Override
-                public void onNetworkConnectionConnected() {
-                    mConnectivitySnackbar.dismiss();
-                    isFragmentLoaded = true;
-                    loadFragment();
-                    isBroadcastReceiverRegistered = false;
-                    getActivity().unregisterReceiver(mConnectivityBroadcastReceiver);
-                }
-            });
-            IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
-            isBroadcastReceiverRegistered = true;
-            getActivity().registerReceiver(mConnectivityBroadcastReceiver, intentFilter);
-        } else if (!isFragmentLoaded && NetworkConnection.isConnected(getContext())) {
-            isFragmentLoaded = true;
-            loadFragment();
+        mPopularMovies = new ArrayList<>();
+        mPopularAdapter = new MovieBriefsSmallAdapter(getContext(), mPopularMovies);
+        mPopularRecyclerView.setAdapter(mPopularAdapter);
+        mPopularRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        mUpcomingMovies = new ArrayList<>();
+        mUpcomingAdapter = new MovieBriefsLargeAdapter(getContext(), mUpcomingMovies);
+        mUpcomingRecyclerView.setAdapter(mUpcomingAdapter);
+        mUpcomingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        mTopRatedMovies = new ArrayList<>();
+        mTopRatedAdapter = new MovieBriefsSmallAdapter(getContext(), mTopRatedMovies);
+        mTopRatedRecyclerView.setAdapter(mTopRatedAdapter);
+        mTopRatedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+    }
+
+    private void initClickListeners(View view) {
+        view.findViewById(R.id.text_view_view_all_now_showing).setOnClickListener(v -> openViewAllMovies(Constants.NOW_SHOWING_MOVIES_TYPE));
+        view.findViewById(R.id.text_view_view_all_popular).setOnClickListener(v -> openViewAllMovies(Constants.POPULAR_MOVIES_TYPE));
+        view.findViewById(R.id.text_view_view_all_upcoming).setOnClickListener(v -> openViewAllMovies(Constants.UPCOMING_MOVIES_TYPE));
+        view.findViewById(R.id.text_view_view_all_top_rated).setOnClickListener(v -> openViewAllMovies(Constants.TOP_RATED_MOVIES_TYPE));
+    }
+
+    private void openViewAllMovies(String viewAllType) {
+        if (!NetworkConnection.isConnected(getContext())) {
+            Toast.makeText(getContext(), R.string.no_network, Toast.LENGTH_SHORT).show();
+            return;
         }
+        Intent intent = new Intent(getContext(), ViewAllMoviesActivity.class);
+        intent.putExtra(Constants.VIEW_ALL_MOVIES_TYPE, viewAllType);
+        startActivity(intent);
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
+    private void observeViewModel() {
+        mMoviesViewModel.getGenresList().observe(getViewLifecycleOwner(), genres -> {
+            if (genres != null) {
+                MovieGenres.loadGenresList(genres);
+            }
+        });
 
-        if (isBroadcastReceiverRegistered) {
-            mConnectivitySnackbar.dismiss();
-            isBroadcastReceiverRegistered = false;
-            getActivity().unregisterReceiver(mConnectivityBroadcastReceiver);
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        if (mGenresListCall != null) mGenresListCall.cancel();
-        if (mNowShowingMoviesCall != null) mNowShowingMoviesCall.cancel();
-        if (mPopularMoviesCall != null) mPopularMoviesCall.cancel();
-        if (mUpcomingMoviesCall != null) mUpcomingMoviesCall.cancel();
-        if (mTopRatedMoviesCall != null) mTopRatedMoviesCall.cancel();
-    }
-
-    private void loadFragment() {
-
-        if (MovieGenres.isGenresListLoaded()) {
-            loadNowShowingMovies();
-            loadPopularMovies();
-            loadUpcomingMovies();
-            loadTopRatedMovies();
-        } else {
-            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            mProgressBar.setVisibility(View.VISIBLE);
-            mGenresListCall = apiService.getMovieGenresList(getResources().getString(R.string.MOVIE_DB_API_KEY));
-            mGenresListCall.enqueue(new Callback<GenresList>() {
-                @Override
-                public void onResponse(Call<GenresList> call, Response<GenresList> response) {
-                    if (!response.isSuccessful()) {
-                        mGenresListCall = call.clone();
-                        mGenresListCall.enqueue(this);
-                        return;
-                    }
-
-                    if (response.body() == null) return;
-                    if (response.body().getGenres() == null) return;
-
-                    MovieGenres.loadGenresList(response.body().getGenres());
-                    loadNowShowingMovies();
-                    loadPopularMovies();
-                    loadUpcomingMovies();
-                    loadTopRatedMovies();
-                }
-
-                @Override
-                public void onFailure(Call<GenresList> call, Throwable t) {
-
-                }
-            });
-        }
-
-    }
-
-    private void loadNowShowingMovies() {
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        mProgressBar.setVisibility(View.VISIBLE);
-        mNowShowingMoviesCall = apiService.getNowShowingMovies(getResources().getString(R.string.MOVIE_DB_API_KEY), 1, "US");
-        mNowShowingMoviesCall.enqueue(new Callback<NowShowingMoviesResponse>() {
-            @Override
-            public void onResponse(Call<NowShowingMoviesResponse> call, Response<NowShowingMoviesResponse> response) {
-                if (!response.isSuccessful()) {
-                    mNowShowingMoviesCall = call.clone();
-                    mNowShowingMoviesCall.enqueue(this);
-                    return;
-                }
-
-                if (response.body() == null) return;
-                if (response.body().getResults() == null) return;
-
-                mNowShowingSectionLoaded = true;
-                checkAllDataLoaded();
-                for (MovieBrief movieBrief : response.body().getResults()) {
-                    if (movieBrief != null && movieBrief.getBackdropPath() != null)
-                        mNowShowingMovies.add(movieBrief);
-                }
+        mMoviesViewModel.getNowShowingMovies().observe(getViewLifecycleOwner(), movies -> {
+            if (movies != null && !movies.isEmpty()) {
+                mNowShowingMovies.clear();
+                mNowShowingMovies.addAll(movies);
                 mNowShowingAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<NowShowingMoviesResponse> call, Throwable t) {
-
+                mNowShowingLayout.setVisibility(View.VISIBLE);
+                mNowShowingRecyclerView.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.GONE);
             }
         });
-    }
 
-    private void loadPopularMovies() {
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        mProgressBar.setVisibility(View.VISIBLE);
-        mPopularMoviesCall = apiService.getPopularMovies(getResources().getString(R.string.MOVIE_DB_API_KEY), 1, "US");
-        mPopularMoviesCall.enqueue(new Callback<PopularMoviesResponse>() {
-            @Override
-            public void onResponse(Call<PopularMoviesResponse> call, Response<PopularMoviesResponse> response) {
-                if (!response.isSuccessful()) {
-                    mPopularMoviesCall = call.clone();
-                    mPopularMoviesCall.enqueue(this);
-                    return;
-                }
-
-                if (response.body() == null) return;
-                if (response.body().getResults() == null) return;
-
-                mPopularSectionLoaded = true;
-                checkAllDataLoaded();
-                for (MovieBrief movieBrief : response.body().getResults()) {
-                    if (movieBrief != null && movieBrief.getPosterPath() != null)
-                        mPopularMovies.add(movieBrief);
-                }
+        mMoviesViewModel.getPopularMovies().observe(getViewLifecycleOwner(), movies -> {
+            if (movies != null && !movies.isEmpty()) {
+                mPopularMovies.clear();
+                mPopularMovies.addAll(movies);
                 mPopularAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<PopularMoviesResponse> call, Throwable t) {
-
+                mPopularLayout.setVisibility(View.VISIBLE);
+                mPopularRecyclerView.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.GONE);
             }
         });
-    }
 
-    private void loadUpcomingMovies() {
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        mProgressBar.setVisibility(View.VISIBLE);
-        mUpcomingMoviesCall = apiService.getUpcomingMovies(getResources().getString(R.string.MOVIE_DB_API_KEY), 1, "US");
-        mUpcomingMoviesCall.enqueue(new Callback<UpcomingMoviesResponse>() {
-            @Override
-            public void onResponse(Call<UpcomingMoviesResponse> call, Response<UpcomingMoviesResponse> response) {
-                if (!response.isSuccessful()) {
-                    mUpcomingMoviesCall = call.clone();
-                    mUpcomingMoviesCall.enqueue(this);
-                    return;
-                }
-
-                if (response.body() == null) return;
-                if (response.body().getResults() == null) return;
-
-                mUpcomingSectionLoaded = true;
-                checkAllDataLoaded();
-                for (MovieBrief movieBrief : response.body().getResults()) {
-                    if (movieBrief != null && movieBrief.getBackdropPath() != null)
-                        mUpcomingMovies.add(movieBrief);
-                }
+        mMoviesViewModel.getUpcomingMovies().observe(getViewLifecycleOwner(), movies -> {
+            if (movies != null && !movies.isEmpty()) {
+                mUpcomingMovies.clear();
+                mUpcomingMovies.addAll(movies);
                 mUpcomingAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<UpcomingMoviesResponse> call, Throwable t) {
-
+                mUpcomingLayout.setVisibility(View.VISIBLE);
+                mUpcomingRecyclerView.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.GONE);
             }
         });
-    }
 
-    private void loadTopRatedMovies() {
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        mProgressBar.setVisibility(View.VISIBLE);
-        mTopRatedMoviesCall = apiService.getTopRatedMovies(getResources().getString(R.string.MOVIE_DB_API_KEY), 1, "US");
-        mTopRatedMoviesCall.enqueue(new Callback<TopRatedMoviesResponse>() {
-            @Override
-            public void onResponse(Call<TopRatedMoviesResponse> call, Response<TopRatedMoviesResponse> response) {
-                if (!response.isSuccessful()) {
-                    mTopRatedMoviesCall = call.clone();
-                    mTopRatedMoviesCall.enqueue(this);
-                    return;
-                }
-
-                if (response.body() == null) return;
-                if (response.body().getResults() == null) return;
-
-                mTopRatedSectionLoaded = true;
-                checkAllDataLoaded();
-                for (MovieBrief movieBrief : response.body().getResults()) {
-                    if (movieBrief != null && movieBrief.getPosterPath() != null)
-                        mTopRatedMovies.add(movieBrief);
-                }
+        mMoviesViewModel.getTopRatedMovies().observe(getViewLifecycleOwner(), movies -> {
+            if (movies != null && !movies.isEmpty()) {
+                mTopRatedMovies.clear();
+                mTopRatedMovies.addAll(movies);
                 mTopRatedAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<TopRatedMoviesResponse> call, Throwable t) {
-
+                mTopRatedLayout.setVisibility(View.VISIBLE);
+                mTopRatedRecyclerView.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.GONE);
             }
         });
-    }
 
-    private void checkAllDataLoaded() {
-        if (mNowShowingSectionLoaded && mPopularSectionLoaded && mUpcomingSectionLoaded && mTopRatedSectionLoaded) {
-            mProgressBar.setVisibility(View.GONE);
-            mNowShowingLayout.setVisibility(View.VISIBLE);
-            mNowShowingRecyclerView.setVisibility(View.VISIBLE);
-            mPopularLayout.setVisibility(View.VISIBLE);
-            mPopularRecyclerView.setVisibility(View.VISIBLE);
-            mUpcomingLayout.setVisibility(View.VISIBLE);
-            mUpcomingRecyclerView.setVisibility(View.VISIBLE);
-            mTopRatedLayout.setVisibility(View.VISIBLE);
-            mTopRatedRecyclerView.setVisibility(View.VISIBLE);
-        }
+        mMoviesViewModel.getError().observe(getViewLifecycleOwner(), isError -> {
+            if (isError) {
+                Toast.makeText(getContext(), R.string.error_loading_movies, Toast.LENGTH_SHORT).show();
+                mProgressBar.setVisibility(View.GONE);
+            }
+        });
     }
 }

@@ -56,10 +56,8 @@ public class TVShowBriefsSmallAdapter extends RecyclerView.Adapter<TVShowBriefsS
 
         if (Favourite.isTVShowFav(mContext, mTVShows.get(position).getId())) {
             holder.tvShowFavImageButton.setImageResource(R.mipmap.ic_favorite_black_18dp);
-            holder.tvShowFavImageButton.setEnabled(false);
         } else {
             holder.tvShowFavImageButton.setImageResource(R.mipmap.ic_favorite_border_black_18dp);
-            holder.tvShowFavImageButton.setEnabled(true);
         }
     }
 
@@ -83,8 +81,9 @@ public class TVShowBriefsSmallAdapter extends RecyclerView.Adapter<TVShowBriefsS
             tvShowTitleTextView = (TextView) itemView.findViewById(R.id.text_view_title_show_card);
             tvShowFavImageButton = (ImageButton) itemView.findViewById(R.id.image_button_fav_show_card);
 
-            tvShowPosterImageView.getLayoutParams().width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.31);
-            tvShowPosterImageView.getLayoutParams().height = (int) ((mContext.getResources().getDisplayMetrics().widthPixels * 0.31) / 0.66);
+            // Target two cards per row in favorites; width accounts for margins.
+            tvShowPosterImageView.getLayoutParams().width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.45);
+            tvShowPosterImageView.getLayoutParams().height = (int) ((mContext.getResources().getDisplayMetrics().widthPixels * 0.45) / 0.66);
 
             tvShowCard.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -99,9 +98,13 @@ public class TVShowBriefsSmallAdapter extends RecyclerView.Adapter<TVShowBriefsS
                 @Override
                 public void onClick(View view) {
                     view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                    Favourite.addTVShowToFav(mContext, mTVShows.get(getAdapterPosition()).getId(), mTVShows.get(getAdapterPosition()).getPosterPath(), mTVShows.get(getAdapterPosition()).getName());
-                    tvShowFavImageButton.setImageResource(R.mipmap.ic_favorite_black_18dp);
-                    tvShowFavImageButton.setEnabled(false);
+                    if (Favourite.isTVShowFav(mContext, mTVShows.get(getAdapterPosition()).getId())) {
+                        Favourite.removeTVShowFromFav(mContext, mTVShows.get(getAdapterPosition()).getId());
+                        tvShowFavImageButton.setImageResource(R.mipmap.ic_favorite_border_black_18dp);
+                    } else {
+                        Favourite.addTVShowToFav(mContext, mTVShows.get(getAdapterPosition()).getId(), mTVShows.get(getAdapterPosition()).getPosterPath(), mTVShows.get(getAdapterPosition()).getName());
+                        tvShowFavImageButton.setImageResource(R.mipmap.ic_favorite_black_18dp);
+                    }
                 }
             });
         }

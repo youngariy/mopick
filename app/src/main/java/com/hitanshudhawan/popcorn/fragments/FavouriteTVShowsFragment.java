@@ -39,7 +39,7 @@ public class FavouriteTVShowsFragment extends Fragment {
         mFavTVShows = new ArrayList<>();
         mFavTVShowsAdapter = new TVShowBriefsSmallAdapter(getContext(), mFavTVShows);
         mFavTVShowsRecyclerView.setAdapter(mFavTVShowsAdapter);
-        mFavTVShowsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        mFavTVShowsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         mEmptyLayout = (LinearLayout) view.findViewById(R.id.layout_recycler_view_fav_tv_shows_empty);
 

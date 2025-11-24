@@ -2,8 +2,6 @@ package com.hitanshudhawan.popcorn.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -56,10 +58,8 @@ public class MovieBriefsSmallAdapter extends RecyclerView.Adapter<MovieBriefsSma
 
         if (Favourite.isMovieFav(mContext, mMovies.get(position).getId())) {
             holder.movieFavImageButton.setImageResource(R.mipmap.ic_favorite_black_18dp);
-            holder.movieFavImageButton.setEnabled(false);
         } else {
             holder.movieFavImageButton.setImageResource(R.mipmap.ic_favorite_border_black_18dp);
-            holder.movieFavImageButton.setEnabled(true);
         }
     }
 
@@ -83,8 +83,13 @@ public class MovieBriefsSmallAdapter extends RecyclerView.Adapter<MovieBriefsSma
             movieTitleTextView = (TextView) itemView.findViewById(R.id.text_view_title_show_card);
             movieFavImageButton = (ImageButton) itemView.findViewById(R.id.image_button_fav_show_card);
 
-            moviePosterImageView.getLayoutParams().width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.31);
-            moviePosterImageView.getLayoutParams().height = (int) ((mContext.getResources().getDisplayMetrics().widthPixels * 0.31) / 0.66);
+            // Target two cards per row in favorites; width accounts for margins.
+            moviePosterImageView.getLayoutParams().width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.45);
+            moviePosterImageView.getLayoutParams().height = (int) ((mContext.getResources().getDisplayMetrics().widthPixels * 0.45) / 0.66);
+            movieCard.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.colorMovieDetailSurface));
+            movieTitleTextView.setTextColor(ContextCompat.getColor(mContext, R.color.colorMovieDetailTextPrimary));
+            moviePosterImageView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorMovieDetailDivider));
+            movieFavImageButton.setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent));
 
             movieCard.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -99,9 +104,14 @@ public class MovieBriefsSmallAdapter extends RecyclerView.Adapter<MovieBriefsSma
                 @Override
                 public void onClick(View view) {
                     view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                    Favourite.addMovieToFav(mContext, mMovies.get(getAdapterPosition()).getId(), mMovies.get(getAdapterPosition()).getPosterPath(), mMovies.get(getAdapterPosition()).getTitle());
-                    movieFavImageButton.setImageResource(R.mipmap.ic_favorite_black_18dp);
-                    movieFavImageButton.setEnabled(false);
+                    MovieBrief movie = mMovies.get(getAdapterPosition());
+                    if (Favourite.isMovieFav(mContext, movie.getId())) {
+                        Favourite.removeMovieFromFav(mContext, movie.getId());
+                        movieFavImageButton.setImageResource(R.mipmap.ic_favorite_border_black_18dp);
+                    } else {
+                        Favourite.addMovieToFav(mContext, movie.getId(), movie.getPosterPath(), movie.getTitle());
+                        movieFavImageButton.setImageResource(R.mipmap.ic_favorite_black_18dp);
+                    }
                 }
             });
         }

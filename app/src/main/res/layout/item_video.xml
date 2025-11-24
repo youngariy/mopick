@@ -14,6 +14,7 @@
         android:clickable="true"
         android:elevation="100dp"
         android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="@color/colorSurface"
         app:cardCornerRadius="4dp">
 
         <ImageView

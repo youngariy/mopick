@@ -32,7 +32,7 @@
             android:name=".activities.MovieDetailActivity"
             android:label="@string/title_activity_movie_detail"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar.DetailScreen" />
+            android:theme="@style/AppTheme.NoActionBar.DetailScreen.MovieDark" />
         <activity
             android:name=".activities.PersonDetailActivity"
             android:label="@string/title_activity_cast_detail"

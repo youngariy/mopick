@@ -1,15 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@color/colorNavigationHeaderBackground"
-    android:gravity="bottom"
-    android:orientation="vertical"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:background="@drawable/bg_nav_header"
+    android:paddingLeft="20dp"
+    android:paddingTop="24dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="20dp"
+    android:theme="@style/ThemeOverlay.MaterialComponents.Dark">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:alpha="0.18"
+        android:scaleType="centerCrop"
         android:src="@drawable/nav_image" />
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/app_name"
+            android:textColor="@color/colorOnSurface"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/nav_tagline"
+            android:textColor="#FFE6D7"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</FrameLayout>

@@ -2,8 +2,6 @@ package com.hitanshudhawan.popcorn.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +10,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -67,10 +69,8 @@ public class MovieBriefsLargeAdapter extends RecyclerView.Adapter<MovieBriefsLar
 
         if (Favourite.isMovieFav(mContext, mMovies.get(position).getId())) {
             holder.movieFavImageButton.setImageResource(R.mipmap.ic_favorite_black_18dp);
-            holder.movieFavImageButton.setEnabled(false);
         } else {
             holder.movieFavImageButton.setImageResource(R.mipmap.ic_favorite_border_black_18dp);
-            holder.movieFavImageButton.setEnabled(true);
         }
     }
 
@@ -81,6 +81,10 @@ public class MovieBriefsLargeAdapter extends RecyclerView.Adapter<MovieBriefsLar
 
     private void setGenres(MovieViewHolder holder, MovieBrief movie) {
         String genreString = "";
+        if (movie.getGenreIds() == null) {
+            holder.movieGenreTextView.setText("");
+            return;
+        }
         for (int i = 0; i < movie.getGenreIds().size(); i++) {
             if (movie.getGenreIds().get(i) == null) continue;
             if (MovieGenres.getGenreName(movie.getGenreIds().get(i)) == null) continue;
@@ -115,6 +119,9 @@ public class MovieBriefsLargeAdapter extends RecyclerView.Adapter<MovieBriefsLar
 
             imageLayout.getLayoutParams().width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.9);
             imageLayout.getLayoutParams().height = (int) ((mContext.getResources().getDisplayMetrics().widthPixels * 0.9) / 1.77);
+            movieCard.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.colorMovieDetailSurface));
+            movieGenreTextView.setTextColor(ContextCompat.getColor(mContext, R.color.colorMovieDetailTextSecondary));
+            movieFavImageButton.setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent));
 
             movieCard.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,9 +136,14 @@ public class MovieBriefsLargeAdapter extends RecyclerView.Adapter<MovieBriefsLar
                 @Override
                 public void onClick(View view) {
                     view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                    Favourite.addMovieToFav(mContext, mMovies.get(getAdapterPosition()).getId(), mMovies.get(getAdapterPosition()).getPosterPath(), mMovies.get(getAdapterPosition()).getTitle());
-                    movieFavImageButton.setImageResource(R.mipmap.ic_favorite_black_18dp);
-                    movieFavImageButton.setEnabled(false);
+                    MovieBrief movie = mMovies.get(getAdapterPosition());
+                    if (Favourite.isMovieFav(mContext, movie.getId())) {
+                        Favourite.removeMovieFromFav(mContext, movie.getId());
+                        movieFavImageButton.setImageResource(R.mipmap.ic_favorite_border_black_18dp);
+                    } else {
+                        Favourite.addMovieToFav(mContext, movie.getId(), movie.getPosterPath(), movie.getTitle());
+                        movieFavImageButton.setImageResource(R.mipmap.ic_favorite_black_18dp);
+                    }
                 }
             });
         }
