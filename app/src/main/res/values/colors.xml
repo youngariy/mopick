@@ -5,10 +5,10 @@
     <color name="colorAccent">#FFC857</color>
 
     <color name="colorBackground">#0E1119</color>
-    <color name="colorSurface">#1F2B3D</color>
+    <color name="colorSurface">#27364E</color>
     <color name="colorOnSurface">#F2F4F8</color>
     <color name="colorSubtleText">#C5CAD6</color>
-    <color name="colorDivider">#3A465B</color>
+    <color name="colorDivider">#4B5D7A</color>
 
     <color name="colorNavigationHeaderBackground">#121826</color>
     <color name="colorNavigationDrawerBackgroud">#0E1119</color>
@@ -17,8 +17,8 @@
 
     <!-- Movie detail dark theme colors -->
     <color name="colorMovieDetailBackground">#0E1119</color>
-    <color name="colorMovieDetailSurface">#1F2B3D</color>
+    <color name="colorMovieDetailSurface">#27364E</color>
     <color name="colorMovieDetailTextPrimary">#F2F4F8</color>
     <color name="colorMovieDetailTextSecondary">#C5CAD6</color>
-    <color name="colorMovieDetailDivider">#3A465B</color>
+    <color name="colorMovieDetailDivider">#4B5D7A</color>
 </resources>

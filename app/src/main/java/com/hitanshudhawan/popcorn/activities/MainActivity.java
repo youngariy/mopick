@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.view.Window;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean doubleBackToExitPressedOnce;
     private Toolbar mToolbar;
     private com.google.android.material.bottomnavigation.BottomNavigationView mBottomNavigation;
-    private ColorStateList mDefaultNavIconTint;
-    private ColorStateList mDefaultNavTextTint;
-    private final int mDefaultBottomNavBackground = R.drawable.bg_bottom_nav;
 
     private BottomNavigationView.OnItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
@@ -68,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         mBottomNavigation = findViewById(R.id.bottom_navigation);
-        mDefaultNavIconTint = mBottomNavigation.getItemIconTintList();
-        mDefaultNavTextTint = mBottomNavigation.getItemTextColor();
         mBottomNavigation.setOnItemSelectedListener(mOnNavigationItemSelectedListener);
 
         // Set default fragment
@@ -155,24 +149,6 @@ public class MainActivity extends AppCompatActivity {
         WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(window, window.getDecorView());
         if (insetsController != null) {
             insetsController.setAppearanceLightStatusBars(false);
-        }
-    }
-
-    private void applyDefaultChrome() {
-        if (mToolbar != null) {
-            mToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
-            mToolbar.setTitleTextColor(Color.WHITE);
-        }
-        if (mBottomNavigation != null) {
-            mBottomNavigation.setBackgroundResource(mDefaultBottomNavBackground);
-            mBottomNavigation.setItemIconTintList(mDefaultNavIconTint);
-            mBottomNavigation.setItemTextColor(mDefaultNavTextTint);
-        }
-        Window window = getWindow();
-        window.setStatusBarColor(Color.TRANSPARENT);
-        WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(window, window.getDecorView());
-        if (insetsController != null) {
-            insetsController.setAppearanceLightStatusBars(true);
         }
     }
 }
