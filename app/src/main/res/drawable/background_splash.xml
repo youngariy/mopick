@@ -16,7 +16,7 @@
         android:height="120dp"
         android:gravity="center">
         <bitmap
-            android:src="@drawable/ic_launcher_large"
+            android:src="@drawable/mopick_feature_graphic"
             android:tint="@color/colorSurface" />
     </item>
 

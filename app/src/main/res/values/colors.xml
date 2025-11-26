@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FF6B4A</color>
     <color name="colorPrimaryDark">#E14D2A</color>
@@ -21,4 +21,6 @@
     <color name="colorMovieDetailTextPrimary">#F2F4F8</color>
     <color name="colorMovieDetailTextSecondary">#C5CAD6</color>
     <color name="colorMovieDetailDivider">#4B5D7A</color>
+    <color name="mopick_bg">#e54330</color>
 </resources>
+

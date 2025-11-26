@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PopCorn</string>
+    <string name="app_name">Mopick</string>
     <string name="nav_tagline">Fresh picks, ready to binge</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

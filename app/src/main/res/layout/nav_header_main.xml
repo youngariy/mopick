@@ -9,13 +9,6 @@
     android:paddingBottom="20dp"
     android:theme="@style/ThemeOverlay.MaterialComponents.Dark">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0.18"
-        android:scaleType="centerCrop"
-        android:src="@drawable/nav_image" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

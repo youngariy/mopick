@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorMovieDetailBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.hitanshudhawan.popcorn.activities.ViewAllMoviesActivity"
+    tools:context="com.youngariy.mopick.activities.ViewAllMoviesActivity"
     tools:showIn="@layout/activity_view_all_movies">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -34,3 +34,5 @@
         <!--app:spb_stroke_width="4dp" />-->
 
 </FrameLayout>
+
+
