@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">모픽</string>
+    <string name="app_name">Mopick</string>
     <string name="nav_tagline">신선한 추천, 바로 시청하세요</string>
 
     <string name="navigation_drawer_open">네비게이션 드로어 열기</string>
