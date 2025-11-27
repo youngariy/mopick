@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.ImageButton;
@@ -43,6 +44,9 @@ import com.youngariy.mopick.network.movies.MovieCreditsResponse;
 import com.youngariy.mopick.network.movies.SimilarMoviesResponse;
 import com.youngariy.mopick.network.videos.Video;
 import com.youngariy.mopick.network.videos.VideosResponse;
+import com.youngariy.mopick.network.watchproviders.WatchProvider;
+import com.youngariy.mopick.network.watchproviders.WatchProviderRegion;
+import com.youngariy.mopick.network.watchproviders.WatchProvidersResponse;
 import com.youngariy.mopick.utils.Constants;
 import com.youngariy.mopick.utils.Favourite;
 import com.youngariy.mopick.utils.LocaleHelper;
@@ -52,8 +56,12 @@ import com.youngariy.mopick.utils.NetworkConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -97,7 +105,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView mOverviewTextView;
     private TextView mOverviewReadMoreTextView;
     private LinearLayout mDetailsLayout;
-    private TextView mDetailsTextView;
+    private TextView mReleaseDateTextView;
+    private TextView mRuntimeTextView;
+    private TextView mWatchProvidersTextView;
 
     private TextView mTrailerTextView;
     private RecyclerView mTrailerRecyclerView;
@@ -124,6 +134,24 @@ public class MovieDetailActivity extends AppCompatActivity {
     private Call<VideosResponse> mMovieTrailersCall;
     private Call<MovieCreditsResponse> mMovieCreditsCall;
     private Call<SimilarMoviesResponse> mSimilarMoviesCall;
+    private Call<WatchProvidersResponse> mWatchProvidersCall;
+
+    private static final Map<String, String> WATCH_PROVIDER_DISPLAY_NAMES;
+
+    static {
+        Map<String, String> map = new HashMap<>();
+        map.put("netflix", "Netflix");
+        map.put("netflix kids", "Netflix");
+        map.put("disney+", "Disney+");
+        map.put("disney plus", "Disney+");
+        map.put("watcha", "Watcha");
+        map.put("wavve", "Wavve");
+        map.put("wave", "Wavve");
+        map.put("amazon prime video", "Prime Video");
+        map.put("apple tv+", "Apple TV+");
+        map.put("apple tv plus", "Apple TV+");
+        WATCH_PROVIDER_DISPLAY_NAMES = Collections.unmodifiableMap(map);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,7 +209,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         mOverviewTextView = (TextView) findViewById(R.id.text_view_overview_movie_detail);
         mOverviewReadMoreTextView = (TextView) findViewById(R.id.text_view_read_more_movie_detail);
         mDetailsLayout = (LinearLayout) findViewById(R.id.layout_details_movie_detail);
-        mDetailsTextView = (TextView) findViewById(R.id.text_view_details_movie_detail);
+        mReleaseDateTextView = findViewById(R.id.text_view_release_date_movie_detail);
+        mRuntimeTextView = findViewById(R.id.text_view_runtime_movie_detail);
+        mWatchProvidersTextView = findViewById(R.id.text_view_watch_providers_movie_detail);
 
         mTrailerTextView = (TextView) findViewById(R.id.text_view_trailer_movie_detail);
         mTrailerRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_trailers_movie_detail);
@@ -266,6 +296,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         if (mMovieTrailersCall != null) mMovieTrailersCall.cancel();
         if (mMovieCreditsCall != null) mMovieCreditsCall.cancel();
         if (mSimilarMoviesCall != null) mSimilarMoviesCall.cancel();
+        if (mWatchProvidersCall != null) mWatchProvidersCall.cancel();
     }
 
     private void loadActivity() {
@@ -373,6 +404,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 }
 
                 setDetails(response.body().getReleaseDate(), response.body().getRuntime());
+                setWatchProviders(apiService);
 
                 setTrailers();
 
@@ -463,32 +495,92 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     private void setDetails(String releaseString, Integer runtime) {
-        String detailsString = "";
-
+        String releaseDisplay = "-";
         if (releaseString != null && !releaseString.trim().isEmpty()) {
             SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
             SimpleDateFormat sdf2 = new SimpleDateFormat("MMM d, yyyy");
             try {
                 Date releaseDate = sdf1.parse(releaseString);
-                detailsString += sdf2.format(releaseDate) + "\n";
+                releaseDisplay = sdf2.format(releaseDate);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        } else {
-            detailsString = "-\n";
         }
+        mReleaseDateTextView.setText(releaseDisplay);
 
-        if (runtime != null && runtime != 0) {
+        String runtimeDisplay = "-";
+        if (runtime != null && runtime > 0) {
             if (runtime < 60) {
-                detailsString += runtime + " min(s)";
+                runtimeDisplay = runtime + " min(s)";
             } else {
-                detailsString += runtime / 60 + " hr " + runtime % 60 + " mins";
+                runtimeDisplay = (runtime / 60) + " hr " + (runtime % 60) + " mins";
             }
-        } else {
-            detailsString += "-";
         }
+        mRuntimeTextView.setText(runtimeDisplay);
+    }
 
-        mDetailsTextView.setText(detailsString);
+    private void setWatchProviders(ApiInterface apiService) {
+        mWatchProvidersTextView.setVisibility(View.GONE);
+        mWatchProvidersTextView.setText("");
+        mWatchProvidersCall = apiService.getMovieWatchProviders(mMovieId, getResources().getString(R.string.MOVIE_DB_API_KEY));
+        mWatchProvidersCall.enqueue(new Callback<WatchProvidersResponse>() {
+            @Override
+            public void onResponse(Call<WatchProvidersResponse> call, Response<WatchProvidersResponse> response) {
+                if (!response.isSuccessful() || response.body() == null) {
+                    showWatchProvidersUnavailable();
+                    return;
+                }
+                String region = LocaleHelper.getRegionCode(MovieDetailActivity.this);
+                WatchProviderRegion regionData = response.body().getRegion(region);
+                if (regionData == null && !"US".equals(region)) {
+                    regionData = response.body().getRegion("US");
+                }
+                if (regionData == null || regionData.getFlatrate() == null || regionData.getFlatrate().isEmpty()) {
+                    showWatchProvidersUnavailable();
+                    return;
+                }
+                List<String> providers = extractProviderNames(regionData.getFlatrate());
+                if (providers.isEmpty()) {
+                    showWatchProvidersUnavailable();
+                    return;
+                }
+                String providersText = TextUtils.join(", ", providers);
+                String formatted = getString(R.string.watch_providers_available, providersText);
+                mWatchProvidersTextView.setText(formatted);
+                mWatchProvidersTextView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFailure(Call<WatchProvidersResponse> call, Throwable t) {
+                showWatchProvidersUnavailable();
+            }
+        });
+    }
+
+    private List<String> extractProviderNames(List<WatchProvider> providerList) {
+        LinkedHashSet<String> names = new LinkedHashSet<>();
+        for (WatchProvider provider : providerList) {
+            if (provider == null || provider.getProviderName() == null) continue;
+            String displayName = formatProviderName(provider.getProviderName().trim());
+            if (!displayName.isEmpty()) {
+                names.add(displayName);
+            }
+        }
+        return new ArrayList<>(names);
+    }
+
+    private String formatProviderName(String rawName) {
+        if (rawName == null) return "";
+        String key = rawName.trim().toLowerCase();
+        if (WATCH_PROVIDER_DISPLAY_NAMES.containsKey(key)) {
+            return WATCH_PROVIDER_DISPLAY_NAMES.get(key);
+        }
+        return rawName.trim();
+    }
+
+    private void showWatchProvidersUnavailable() {
+        mWatchProvidersTextView.setText(R.string.watch_providers_not_available);
+        mWatchProvidersTextView.setVisibility(View.VISIBLE);
     }
 
     private void setTrailers() {
