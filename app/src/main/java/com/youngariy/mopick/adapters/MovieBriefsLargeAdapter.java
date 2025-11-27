@@ -55,10 +55,13 @@ public class MovieBriefsLargeAdapter extends RecyclerView.Adapter<MovieBriefsLar
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.moviePosterImageView);
 
-        if (mMovies.get(position).getTitle() != null)
-            holder.movieTitleTextView.setText(mMovies.get(position).getTitle());
-        else
-            holder.movieTitleTextView.setText("");
+        String title = mMovies.get(position).getTitle();
+        if (title != null && !title.trim().isEmpty()) {
+            holder.movieTitleTextView.setText(title);
+            holder.movieTitleTextView.setVisibility(View.VISIBLE);
+        } else {
+            holder.movieTitleTextView.setVisibility(View.GONE);
+        }
 
         if (mMovies.get(position).getVoteAverage() != null && mMovies.get(position).getVoteAverage() > 0) {
             holder.movieRatingTextView.setVisibility(View.VISIBLE);

@@ -11,8 +11,10 @@
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="language">Language</string>
-    <string name="language_korean">Korean</string>
+    <string name="language_korean">한국어</string>
     <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_japanese">日本語</string>
     <string name="change_language">Change Language</string>
 
     <string name="now_showing">Now Showing</string>

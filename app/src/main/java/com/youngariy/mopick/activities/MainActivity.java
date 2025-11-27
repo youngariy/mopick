@@ -21,6 +21,9 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import com.youngariy.mopick.R;
 import com.youngariy.mopick.fragments.FavouritesFragment;
 import com.youngariy.mopick.fragments.MoviesFragment;
@@ -34,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean doubleBackToExitPressedOnce;
     private Toolbar mToolbar;
     private com.google.android.material.bottomnavigation.BottomNavigationView mBottomNavigation;
+    private DrawerLayout mDrawerLayout;
+    private NavigationView mNavigationView;
     private String currentLanguage;
 
     private BottomNavigationView.OnItemSelectedListener mOnNavigationItemSelectedListener
@@ -71,6 +76,30 @@ public class MainActivity extends AppCompatActivity {
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mNavigationView = findViewById(R.id.nav_view);
+        
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        mNavigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_settings) {
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                mDrawerLayout.closeDrawers();
+                return true;
+            } else if (id == R.id.nav_about) {
+                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+                startActivity(intent);
+                mDrawerLayout.closeDrawers();
+                return true;
+            }
+            return false;
+        });
 
         mBottomNavigation = findViewById(R.id.bottom_navigation);
         mBottomNavigation.setOnItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -136,11 +165,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_about) {
-            Intent intent = new Intent(this, AboutActivity.class);
-            startActivity(intent);
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 

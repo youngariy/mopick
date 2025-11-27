@@ -13,6 +13,8 @@
     <string name="language">언어</string>
     <string name="language_korean">한국어</string>
     <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_japanese">日本語</string>
     <string name="change_language">언어 변경</string>
 
     <string name="now_showing">현재 상영중</string>

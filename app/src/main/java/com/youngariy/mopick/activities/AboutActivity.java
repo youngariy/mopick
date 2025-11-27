@@ -34,8 +34,6 @@ public class AboutActivity extends AppCompatActivity {
     private ImageButton feedbackImageButton;
 
     private CardView sourceCodeOnGitHubCardView;
-    private CardView changeLanguageCardView;
-    private TextView currentLanguageTextView;
 
     private FrameLayout openSourceLicensesFrameLayout;
     private TextView versionNumberTextView;
@@ -59,8 +57,6 @@ public class AboutActivity extends AppCompatActivity {
         feedbackImageButton = (ImageButton) findViewById(R.id.image_button_feedback_about);
 
         sourceCodeOnGitHubCardView = (CardView) findViewById(R.id.card_view_source_code_on_github);
-        changeLanguageCardView = (CardView) findViewById(R.id.card_view_change_language);
-        currentLanguageTextView = (TextView) findViewById(R.id.text_view_current_language);
 
         openSourceLicensesFrameLayout = (FrameLayout) findViewById(R.id.frame_layout_open_source_licenses);
         versionNumberTextView = (TextView) findViewById(R.id.text_view_version_number);
@@ -70,24 +66,6 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     private void loadActivity() {
-
-        // Set current language display
-        String currentLanguage = LocaleHelper.getLanguage(this);
-        if (currentLanguage.equals("ko")) {
-            currentLanguageTextView.setText(getString(R.string.language_korean));
-        } else {
-            currentLanguageTextView.setText(getString(R.string.language_english));
-        }
-
-        // Language change click listener
-        changeLanguageCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                showLanguageDialog();
-            }
-        });
-
         shareImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -152,24 +130,6 @@ public class AboutActivity extends AppCompatActivity {
 
     }
 
-    private void showLanguageDialog() {
-        String currentLanguage = LocaleHelper.getLanguage(this);
-        String[] languages = {getString(R.string.language_korean), getString(R.string.language_english)};
-        int checkedItem = currentLanguage.equals("ko") ? 0 : 1;
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.language);
-        builder.setSingleChoiceItems(languages, checkedItem, (dialog, which) -> {
-            String selectedLanguage = (which == 0) ? "ko" : "en";
-            if (!selectedLanguage.equals(currentLanguage)) {
-                LocaleHelper.setLocale(this, selectedLanguage);
-                recreate();
-            }
-            dialog.dismiss();
-        });
-        builder.setNegativeButton(android.R.string.cancel, null);
-        builder.show();
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

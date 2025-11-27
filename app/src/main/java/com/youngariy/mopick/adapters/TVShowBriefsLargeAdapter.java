@@ -53,10 +53,13 @@ public class TVShowBriefsLargeAdapter extends RecyclerView.Adapter<TVShowBriefsL
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.tvShowPosterImageView);
 
-        if (mTVShows.get(position).getName() != null)
-            holder.tvShowTitleTextView.setText(mTVShows.get(position).getName());
-        else
-            holder.tvShowTitleTextView.setText("");
+        String name = mTVShows.get(position).getName();
+        if (name != null && !name.trim().isEmpty()) {
+            holder.tvShowTitleTextView.setText(name);
+            holder.tvShowTitleTextView.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvShowTitleTextView.setVisibility(View.GONE);
+        }
 
         if (mTVShows.get(position).getVoteAverage() != null && mTVShows.get(position).getVoteAverage() > 0) {
             holder.tvShowRatingTextView.setVisibility(View.VISIBLE);

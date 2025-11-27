@@ -29,14 +29,32 @@ public class LocaleHelper {
 
     public static String getLanguageCode(Context context) {
         String language = getPersistedLanguage(context);
-        // TMDB API language codes: "ko" for Korean, "en" for English
-        return language.equals("ko") ? "ko" : "en";
+        // TMDB API language codes
+        switch (language) {
+            case "ko":
+                return "ko";
+            case "zh":
+                return "zh";
+            case "ja":
+                return "ja";
+            default:
+                return "en";
+        }
     }
 
     public static String getRegionCode(Context context) {
         String language = getPersistedLanguage(context);
-        // TMDB API region codes: "KR" for Korea, "US" for United States
-        return language.equals("ko") ? "KR" : "US";
+        // TMDB API region codes: "KR" for Korea, "CN" for China, "JP" for Japan, "US" for United States
+        switch (language) {
+            case "ko":
+                return "KR";
+            case "zh":
+                return "CN";
+            case "ja":
+                return "JP";
+            default:
+                return "US";
+        }
     }
 
     private static String getPersistedLanguage(Context context) {
