@@ -18,6 +18,7 @@ import com.youngariy.mopick.network.tvshows.TVShow;
 import com.youngariy.mopick.network.tvshows.TVShowCreditsResponse;
 import com.youngariy.mopick.network.tvshows.TopRatedTVShowsResponse;
 import com.youngariy.mopick.network.videos.VideosResponse;
+import com.youngariy.mopick.network.watchproviders.WatchProvidersResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -56,6 +57,9 @@ public interface ApiInterface {
     @GET("movie/{id}/similar")
     Call<SimilarMoviesResponse> getSimilarMovies(@Path("id") Integer movieId, @Query("api_key") String apiKey, @Query("page") Integer page, @Query("language") String language);
 
+    @GET("movie/{id}/watch/providers")
+    Call<WatchProvidersResponse> getMovieWatchProviders(@Path("id") Integer movieId, @Query("api_key") String apiKey);
+
     @GET("genre/movie/list")
     Call<com.youngariy.mopick.network.movies.GenresList> getMovieGenresList(@Query("api_key") String apiKey, @Query("language") String language);
 
@@ -84,6 +88,9 @@ public interface ApiInterface {
 
     @GET("tv/{id}/similar")
     Call<SimilarTVShowsResponse> getSimilarTVShows(@Path("id") Integer movieId, @Query("api_key") String apiKey, @Query("page") Integer page, @Query("language") String language);
+
+    @GET("tv/{id}/watch/providers")
+    Call<WatchProvidersResponse> getTVShowWatchProviders(@Path("id") Integer tvShowId, @Query("api_key") String apiKey);
 
     @GET("genre/tv/list")
     Call<com.youngariy.mopick.network.tvshows.GenresList> getTVShowGenresList(@Query("api_key") String apiKey, @Query("language") String language);

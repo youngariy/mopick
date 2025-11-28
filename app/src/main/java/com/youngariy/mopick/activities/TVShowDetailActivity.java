@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+import android.text.TextUtils;
+import android.text.TextUtils;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.ImageButton;
@@ -44,6 +46,9 @@ import com.youngariy.mopick.network.tvshows.TVShowCastBrief;
 import com.youngariy.mopick.network.tvshows.TVShowCreditsResponse;
 import com.youngariy.mopick.network.videos.Video;
 import com.youngariy.mopick.network.videos.VideosResponse;
+import com.youngariy.mopick.network.watchproviders.WatchProvider;
+import com.youngariy.mopick.network.watchproviders.WatchProviderRegion;
+import com.youngariy.mopick.network.watchproviders.WatchProvidersResponse;
 import com.youngariy.mopick.utils.Constants;
 import com.youngariy.mopick.utils.Favourite;
 import com.youngariy.mopick.utils.LocaleHelper;
@@ -53,8 +58,12 @@ import com.youngariy.mopick.utils.NetworkConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -97,7 +106,12 @@ public class TVShowDetailActivity extends AppCompatActivity {
     private TextView mOverviewTextView;
     private TextView mOverviewReadMoreTextView;
     private LinearLayout mDetailsLayout;
-    private TextView mDetailsTextView;
+    private TextView mFirstAirDateTextView;
+    private TextView mRuntimeTextView;
+    private TextView mStatusTextView;
+    private TextView mOriginCountryTextView;
+    private TextView mNetworksTextView;
+    private TextView mWatchProvidersTextView;
 
     private TextView mVideosTextView;
     private RecyclerView mVideosRecyclerView;
@@ -124,6 +138,24 @@ public class TVShowDetailActivity extends AppCompatActivity {
     private Call<VideosResponse> mVideosCall;
     private Call<TVShowCreditsResponse> mTVShowCreditsCall;
     private Call<SimilarTVShowsResponse> mSimilarTVShowsCall;
+    private Call<WatchProvidersResponse> mWatchProvidersCall;
+
+    private static final Map<String, String> WATCH_PROVIDER_DISPLAY_NAMES;
+
+    static {
+        Map<String, String> map = new HashMap<>();
+        map.put("netflix", "Netflix");
+        map.put("netflix kids", "Netflix");
+        map.put("disney+", "Disney+");
+        map.put("disney plus", "Disney+");
+        map.put("watcha", "Watcha");
+        map.put("wavve", "Wavve");
+        map.put("wave", "Wavve");
+        map.put("amazon prime video", "Prime Video");
+        map.put("apple tv+", "Apple TV+");
+        map.put("apple tv plus", "Apple TV+");
+        WATCH_PROVIDER_DISPLAY_NAMES = Collections.unmodifiableMap(map);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,7 +213,12 @@ public class TVShowDetailActivity extends AppCompatActivity {
         mOverviewTextView = (TextView) findViewById(R.id.text_view_overview_tv_show_detail);
         mOverviewReadMoreTextView = (TextView) findViewById(R.id.text_view_read_more_tv_show_detail);
         mDetailsLayout = (LinearLayout) findViewById(R.id.layout_details_tv_show_detail);
-        mDetailsTextView = (TextView) findViewById(R.id.text_view_details_tv_show_detail);
+        mFirstAirDateTextView = findViewById(R.id.text_view_first_air_date_tv_show_detail);
+        mRuntimeTextView = findViewById(R.id.text_view_runtime_tv_show_detail);
+        mStatusTextView = findViewById(R.id.text_view_status_tv_show_detail);
+        mOriginCountryTextView = findViewById(R.id.text_view_origin_country_tv_show_detail);
+        mNetworksTextView = findViewById(R.id.text_view_networks_tv_show_detail);
+        mWatchProvidersTextView = findViewById(R.id.text_view_watch_providers_tv_show_detail);
 
         mVideosTextView = (TextView) findViewById(R.id.text_view_trailer_tv_show_detail);
         mVideosRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_trailers_tv_show_detail);
@@ -265,6 +302,7 @@ public class TVShowDetailActivity extends AppCompatActivity {
         if (mVideosCall != null) mVideosCall.cancel();
         if (mTVShowCreditsCall != null) mTVShowCreditsCall.cancel();
         if (mSimilarTVShowsCall != null) mSimilarTVShowsCall.cancel();
+        if (mWatchProvidersCall != null) mWatchProvidersCall.cancel();
     }
 
     private void loadActivity() {
@@ -372,6 +410,7 @@ public class TVShowDetailActivity extends AppCompatActivity {
                 }
 
                 setDetails(response.body().getFirstAirDate(), response.body().getEpisodeRunTime(), response.body().getStatus(), response.body().getOriginCountries(), response.body().getNetworks());
+                setWatchProviders(apiService);
 
                 setVideos();
 
@@ -461,67 +500,125 @@ public class TVShowDetailActivity extends AppCompatActivity {
     }
 
     private void setDetails(String firstAirDateString, List<Integer> runtime, String status, List<String> originCountries, List<Network> networks) {
-        String detailsString = "";
-
+        String firstAirDateDisplay = "-";
         if (firstAirDateString != null && !firstAirDateString.trim().isEmpty()) {
             SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
             SimpleDateFormat sdf2 = new SimpleDateFormat("MMM d, yyyy");
             try {
                 Date releaseDate = sdf1.parse(firstAirDateString);
-                detailsString += sdf2.format(releaseDate) + "\n";
+                firstAirDateDisplay = sdf2.format(releaseDate);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        } else {
-            detailsString = "-\n";
         }
+        mFirstAirDateTextView.setText(firstAirDateDisplay);
 
-        if (runtime != null && !runtime.isEmpty() && runtime.get(0) != 0) {
-            if (runtime.get(0) < 60) {
-                detailsString += runtime.get(0) + " min(s)" + "\n";
+        String runtimeDisplay = "-";
+        if (runtime != null && !runtime.isEmpty() && runtime.get(0) != null && runtime.get(0) > 0) {
+            int runtimeValue = runtime.get(0);
+            if (runtimeValue < 60) {
+                runtimeDisplay = runtimeValue + " min(s)";
             } else {
-                detailsString += runtime.get(0) / 60 + " hr " + runtime.get(0) % 60 + " mins" + "\n";
+                runtimeDisplay = (runtimeValue / 60) + " hr " + (runtimeValue % 60) + " mins";
             }
-        } else {
-            detailsString += "-\n";
         }
+        mRuntimeTextView.setText(runtimeDisplay);
 
         if (status != null && !status.trim().isEmpty()) {
-            detailsString += status + "\n";
+            mStatusTextView.setText(status);
         } else {
-            detailsString += "-\n";
+            mStatusTextView.setText("-");
         }
 
-        String originCountriesString = "";
+        String originDisplay = "-";
         if (originCountries != null && !originCountries.isEmpty()) {
+            List<String> cleaned = new ArrayList<>();
             for (String country : originCountries) {
                 if (country == null || country.trim().isEmpty()) continue;
-                originCountriesString += country + ", ";
+                cleaned.add(country.trim());
             }
-            if (!originCountriesString.isEmpty())
-                detailsString += originCountriesString.substring(0, originCountriesString.length() - 2) + "\n";
-            else
-                detailsString += "-\n";
-        } else {
-            detailsString += "-\n";
+            if (!cleaned.isEmpty()) {
+                originDisplay = TextUtils.join(", ", cleaned);
+            }
         }
+        mOriginCountryTextView.setText(originDisplay);
 
-        String networksString = "";
+        String networksDisplay = "-";
         if (networks != null && !networks.isEmpty()) {
+            List<String> names = new ArrayList<>();
             for (Network network : networks) {
-                if (network == null || network.getName() == null || network.getName().isEmpty())
-                    continue;
-                networksString += network.getName() + ", ";
+                if (network == null || network.getName() == null || network.getName().trim().isEmpty()) continue;
+                names.add(network.getName().trim());
             }
-            if (!networksString.isEmpty())
-                detailsString += networksString.substring(0, networksString.length() - 2);
-            else
-                detailsString += "-\n";
-        } else {
-            detailsString += "-\n";
+            if (!names.isEmpty()) {
+                networksDisplay = TextUtils.join(", ", names);
+            }
         }
+        mNetworksTextView.setText(networksDisplay);
+    }
 
-        mDetailsTextView.setText(detailsString);
+    private void setWatchProviders(ApiInterface apiService) {
+        mWatchProvidersTextView.setVisibility(View.GONE);
+        mWatchProvidersTextView.setText("");
+        mWatchProvidersCall = apiService.getTVShowWatchProviders(mTVShowId, getResources().getString(R.string.MOVIE_DB_API_KEY));
+        mWatchProvidersCall.enqueue(new Callback<WatchProvidersResponse>() {
+            @Override
+            public void onResponse(Call<WatchProvidersResponse> call, Response<WatchProvidersResponse> response) {
+                if (!response.isSuccessful() || response.body() == null) {
+                    showWatchProvidersUnavailable();
+                    return;
+                }
+                String region = LocaleHelper.getRegionCode(TVShowDetailActivity.this);
+                WatchProviderRegion regionData = response.body().getRegion(region);
+                if (regionData == null && !"US".equals(region)) {
+                    regionData = response.body().getRegion("US");
+                }
+                if (regionData == null || regionData.getFlatrate() == null || regionData.getFlatrate().isEmpty()) {
+                    showWatchProvidersUnavailable();
+                    return;
+                }
+                List<String> providers = extractProviderNames(regionData.getFlatrate());
+                if (providers.isEmpty()) {
+                    showWatchProvidersUnavailable();
+                    return;
+                }
+                String providersText = TextUtils.join(", ", providers);
+                String formatted = getString(R.string.watch_providers_available, providersText);
+                mWatchProvidersTextView.setText(formatted);
+                mWatchProvidersTextView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFailure(Call<WatchProvidersResponse> call, Throwable t) {
+                showWatchProvidersUnavailable();
+            }
+        });
+    }
+
+    private List<String> extractProviderNames(List<WatchProvider> providerList) {
+        LinkedHashSet<String> names = new LinkedHashSet<>();
+        for (WatchProvider provider : providerList) {
+            if (provider == null || provider.getProviderName() == null) continue;
+            String displayName = formatProviderName(provider.getProviderName().trim());
+            if (!displayName.isEmpty()) {
+                names.add(displayName);
+            }
+        }
+        return new ArrayList<>(names);
+    }
+
+    private String formatProviderName(String rawName) {
+        if (rawName == null) return "";
+        String key = rawName.trim().toLowerCase();
+        if (WATCH_PROVIDER_DISPLAY_NAMES.containsKey(key)) {
+            return WATCH_PROVIDER_DISPLAY_NAMES.get(key);
+        }
+        return rawName.trim();
+    }
+
+    private void showWatchProvidersUnavailable() {
+        mWatchProvidersTextView.setText(R.string.watch_providers_not_available);
+        mWatchProvidersTextView.setVisibility(View.VISIBLE);
     }
 
     private void setVideos() {

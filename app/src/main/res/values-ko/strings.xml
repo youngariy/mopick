@@ -44,6 +44,8 @@
 
     <string name="read_more">더 보기</string>
     <string name="movie_details">개봉일  \n상영 시간  </string>
+    <string name="movie_detail_release_date">첫 방영일</string>
+    <string name="movie_detail_runtime">상영 시간</string>
     <string name="trailers">예고편</string>
     <string name="cast">출연진</string>
     <string name="similar_movies">유사한 영화</string>
@@ -51,8 +53,15 @@
     <string name="movie_cast">영화 출연작</string>
     <string name="tv_cast">TV 출연작</string>
     <string name="tv_show_details">첫 방영일  \n상영 시간  \n상태  \n제작 국가  \n방송사  </string>
+    <string name="tv_show_detail_first_air_date">첫 방영일</string>
+    <string name="tv_show_detail_runtime">상영 시간</string>
+    <string name="tv_show_detail_status">상태</string>
+    <string name="tv_show_detail_origin_country">제작 국가</string>
+    <string name="tv_show_detail_networks">방송사</string>
     <string name="videos">비디오</string>
     <string name="similar_tv_shows">유사한 TV 프로그램</string>
+    <string name="watch_providers_available">%1$s에서 시청 가능</string>
+    <string name="watch_providers_not_available">시청 가능한 OTT 정보가 없습니다</string>
 
     <string name="no_fav_movies">즐겨찾기한 영화가 없습니다</string>
     <string name="no_fav_tv_shows">즐겨찾기한 TV 프로그램이 없습니다</string>

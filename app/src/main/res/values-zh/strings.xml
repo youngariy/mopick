@@ -44,6 +44,8 @@
 
     <string name="read_more">更多</string>
     <string name="movie_details">上映日期  \n时长  </string>
+    <string name="movie_detail_release_date">上映日期</string>
+    <string name="movie_detail_runtime">时长</string>
     <string name="trailers">预告片</string>
     <string name="cast">演员</string>
     <string name="similar_movies">相似电影</string>
@@ -51,8 +53,15 @@
     <string name="movie_cast">电影作品</string>
     <string name="tv_cast">电视作品</string>
     <string name="tv_show_details">首播日期  \n时长  \n状态  \n原产国  \n网络  </string>
+    <string name="tv_show_detail_first_air_date">首播日期</string>
+    <string name="tv_show_detail_runtime">时长</string>
+    <string name="tv_show_detail_status">状态</string>
+    <string name="tv_show_detail_origin_country">原产国</string>
+    <string name="tv_show_detail_networks">网络</string>
     <string name="videos">视频</string>
     <string name="similar_tv_shows">相似电视节目</string>
+    <string name="watch_providers_available">可在%1$s观看</string>
+    <string name="watch_providers_not_available">暂无可用的流媒体信息</string>
 
     <string name="no_fav_movies">没有收藏的电影</string>
     <string name="no_fav_tv_shows">没有收藏的电视节目</string>
