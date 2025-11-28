@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/bg_bottom_nav_dark"
+        android:background="@color/colorMovieDetailBackground"
         android:elevation="10dp"
         app:itemIconTint="@color/bottom_nav_selector_dark"
         app:itemRippleColor="@color/colorAccent"

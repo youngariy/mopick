@@ -14,6 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingTop="?attr/actionBarSize"
             android:paddingBottom="20dp">
 
             <FrameLayout
@@ -23,7 +24,6 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="12dp"
-                android:background="@drawable/bg_section_header_movie_dark"
                 android:visibility="gone">
 
                 <TextView
@@ -62,7 +62,6 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="12dp"
-                android:background="@drawable/bg_section_header_movie_dark"
                 android:visibility="gone">
 
                 <TextView
@@ -101,7 +100,6 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="12dp"
-                android:background="@drawable/bg_section_header_movie_dark"
                 android:visibility="gone">
 
                 <TextView
@@ -140,7 +138,6 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="12dp"
-                android:background="@drawable/bg_section_header_movie_dark"
                 android:visibility="gone">
 
                 <TextView

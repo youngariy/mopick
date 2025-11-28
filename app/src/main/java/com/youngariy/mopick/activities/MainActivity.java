@@ -177,11 +177,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void applyMoviesChrome() {
         if (mToolbar != null) {
-            mToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorMovieDetailSurface));
+            mToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorMovieDetailBackground));
             mToolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.colorMovieDetailTextPrimary));
         }
         if (mBottomNavigation != null) {
-            mBottomNavigation.setBackgroundResource(R.drawable.bg_bottom_nav_dark);
+            mBottomNavigation.setBackgroundColor(ContextCompat.getColor(this, R.color.colorMovieDetailBackground));
             ColorStateList darkStateList = ContextCompat.getColorStateList(this, R.color.bottom_nav_selector_dark);
             mBottomNavigation.setItemIconTintList(darkStateList);
             mBottomNavigation.setItemTextColor(darkStateList);

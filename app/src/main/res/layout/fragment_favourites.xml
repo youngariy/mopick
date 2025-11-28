@@ -1,55 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/colorMovieDetailBackground"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
-    android:paddingLeft="12dp"
-    android:paddingRight="12dp">
+    android:paddingTop="12dp"
+    android:paddingBottom="20dp">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_fav_all"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/layout_recycler_view_fav_empty"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_gravity="center"
         android:gravity="center"
-        android:layout_marginBottom="12dp">
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_fav_movies"
-            android:layout_width="0dp"
-            android:layout_height="46dp"
-            android:layout_weight="1"
-            android:background="@drawable/fav_toggle_active"
-            android:text="@string/movies"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textStyle="bold" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_favorite_black_48dp"
+            app:tint="@color/colorPrimary" />
 
-        <Space
-            android:layout_width="8dp"
-            android:layout_height="1dp" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_fav_tv"
-            android:layout_width="0dp"
-            android:layout_height="46dp"
-            android:layout_weight="1"
-            android:background="@drawable/fav_toggle_inactive"
-            android:text="@string/tv_shows"
-            android:textAllCaps="false"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/no_fav_movies"
+            android:textAlignment="center"
+            android:textColor="@color/colorSubtleText" />
 
     </LinearLayout>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager_fav"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp" />
-
-</LinearLayout>
+</FrameLayout>
