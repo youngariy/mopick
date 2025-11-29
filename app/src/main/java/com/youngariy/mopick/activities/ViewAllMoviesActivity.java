@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
 import androidx.appcompat.widget.PopupMenu;
@@ -60,6 +61,7 @@ public class ViewAllMoviesActivity extends AppCompatActivity {
     private Integer mSelectedGenreId = null;
     private MaterialButton mGenreButton;
     private List<Genre> mGenres;
+    private TextView mEmptyStateTextView;
 
     // 원본 데이터 저장
     private List<MovieBrief> mOriginalMovies = new ArrayList<>();
@@ -69,6 +71,7 @@ public class ViewAllMoviesActivity extends AppCompatActivity {
     private boolean loading = true;
     private int previousTotal = 0;
     private int visibleThreshold = 5;
+    private boolean mHasLoadedAtLeastOnce = false;
 
     private Call<GenresList> mGenresListCall;
     private Call<NowShowingMoviesResponse> mNowShowingMoviesCall;
@@ -112,6 +115,7 @@ public class ViewAllMoviesActivity extends AppCompatActivity {
 
         mRecyclerView = findViewById(R.id.recycler_view_view_all);
         mGenreButton = findViewById(R.id.button_genre_filter);
+        mEmptyStateTextView = findViewById(R.id.text_view_empty_state);
         mMovies = new ArrayList<>();
         mMoviesAdapter = new MovieBriefsSmallAdapter(this, mMovies);
         mRecyclerView.setAdapter(mMoviesAdapter);
@@ -215,7 +219,7 @@ public class ViewAllMoviesActivity extends AppCompatActivity {
                 }
             }
         } else {
-            mGenreButton.setText("카테고리");
+            mGenreButton.setText(getString(R.string.select_genre));
         }
 
         mGenreButton.setOnClickListener(v -> {
@@ -251,6 +255,13 @@ public class ViewAllMoviesActivity extends AppCompatActivity {
             }
         }
         mMoviesAdapter.notifyDataSetChanged();
+        updateEmptyState();
+    }
+
+    private void updateEmptyState() {
+        if (mEmptyStateTextView == null) return;
+        boolean showEmpty = mHasLoadedAtLeastOnce && mMovies.isEmpty();
+        mEmptyStateTextView.setVisibility(showEmpty ? View.VISIBLE : View.GONE);
     }
 
     private void loadMovies(String movieType) { // Changed parameter to String
@@ -271,12 +282,17 @@ public class ViewAllMoviesActivity extends AppCompatActivity {
                         mNowShowingMoviesCall.enqueue(this);
                         return;
                     }
-                    if (response.body() == null || response.body().getResults() == null) return;
+                    if (response.body() == null || response.body().getResults() == null) {
+                        mHasLoadedAtLeastOnce = true;
+                        applyGenreFilter();
+                        return;
+                    }
 
                     for (MovieBrief movieBrief : response.body().getResults()) {
                         if (movieBrief != null && movieBrief.getTitle() != null && movieBrief.getPosterPath() != null)
                             mOriginalMovies.add(movieBrief);
                     }
+                    mHasLoadedAtLeastOnce = true;
                     applyGenreFilter();
                     if (response.body().getPage() == response.body().getTotalPages()) pagesOver = true;
                     else presentPage++;
@@ -284,7 +300,8 @@ public class ViewAllMoviesActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(@NonNull Call<NowShowingMoviesResponse> call, @NonNull Throwable t) {
-                    // Handle failure
+                    mHasLoadedAtLeastOnce = true;
+                    applyGenreFilter();
                 }
             });
         } else if (movieType.equals(Constants.POPULAR_MOVIES_TYPE)) {
@@ -297,12 +314,17 @@ public class ViewAllMoviesActivity extends AppCompatActivity {
                         mPopularMoviesCall.enqueue(this);
                         return;
                     }
-                    if (response.body() == null || response.body().getResults() == null) return;
+                    if (response.body() == null || response.body().getResults() == null) {
+                        mHasLoadedAtLeastOnce = true;
+                        applyGenreFilter();
+                        return;
+                    }
 
                     for (MovieBrief movieBrief : response.body().getResults()) {
                         if (movieBrief != null && movieBrief.getTitle() != null && movieBrief.getPosterPath() != null)
                             mOriginalMovies.add(movieBrief);
                     }
+                    mHasLoadedAtLeastOnce = true;
                     applyGenreFilter();
                     if (response.body().getPage() == response.body().getTotalPages()) pagesOver = true;
                     else presentPage++;
@@ -310,7 +332,8 @@ public class ViewAllMoviesActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(@NonNull Call<PopularMoviesResponse> call, @NonNull Throwable t) {
-                    // Handle failure
+                    mHasLoadedAtLeastOnce = true;
+                    applyGenreFilter();
                 }
             });
         } else if (movieType.equals(Constants.UPCOMING_MOVIES_TYPE)) {
@@ -323,12 +346,17 @@ public class ViewAllMoviesActivity extends AppCompatActivity {
                         mUpcomingMoviesCall.enqueue(this);
                         return;
                     }
-                    if (response.body() == null || response.body().getResults() == null) return;
+                    if (response.body() == null || response.body().getResults() == null) {
+                        mHasLoadedAtLeastOnce = true;
+                        applyGenreFilter();
+                        return;
+                    }
 
                     for (MovieBrief movieBrief : response.body().getResults()) {
                         if (movieBrief != null && movieBrief.getTitle() != null && movieBrief.getPosterPath() != null)
                             mOriginalMovies.add(movieBrief);
                     }
+                    mHasLoadedAtLeastOnce = true;
                     applyGenreFilter();
                     if (response.body().getPage() == response.body().getTotalPages()) pagesOver = true;
                     else presentPage++;
@@ -336,7 +364,8 @@ public class ViewAllMoviesActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(@NonNull Call<UpcomingMoviesResponse> call, @NonNull Throwable t) {
-                    // Handle failure
+                    mHasLoadedAtLeastOnce = true;
+                    applyGenreFilter();
                 }
             });
         } else if (movieType.equals(Constants.TOP_RATED_MOVIES_TYPE)) {
@@ -349,12 +378,17 @@ public class ViewAllMoviesActivity extends AppCompatActivity {
                         mTopRatedMoviesCall.enqueue(this);
                         return;
                     }
-                    if (response.body() == null || response.body().getResults() == null) return;
+                    if (response.body() == null || response.body().getResults() == null) {
+                        mHasLoadedAtLeastOnce = true;
+                        applyGenreFilter();
+                        return;
+                    }
 
                     for (MovieBrief movieBrief : response.body().getResults()) {
                         if (movieBrief != null && movieBrief.getTitle() != null && movieBrief.getPosterPath() != null)
                             mOriginalMovies.add(movieBrief);
                     }
+                    mHasLoadedAtLeastOnce = true;
                     applyGenreFilter();
                     if (response.body().getPage() == response.body().getTotalPages()) pagesOver = true;
                     else presentPage++;
@@ -362,7 +396,8 @@ public class ViewAllMoviesActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(@NonNull Call<TopRatedMoviesResponse> call, @NonNull Throwable t) {
-                    // Handle failure
+                    mHasLoadedAtLeastOnce = true;
+                    applyGenreFilter();
                 }
             });
         }

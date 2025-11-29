@@ -86,5 +86,7 @@
     <string name="title_activity_about">정보</string>
     <string name="title_activity_search">검색</string>
     <string name="MOVIE_DB_API_KEY">957e5740ac3a4fbe6c5046369fa0f815</string>
+    <string name="select_genre">카테고리</string>
+    <string name="no_category_content">해당 카테고리에 알맞은 컨텐츠가 현재 없습니다.</string>
 </resources>
 

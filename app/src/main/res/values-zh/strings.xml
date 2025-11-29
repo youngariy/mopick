@@ -86,5 +86,7 @@
     <string name="title_activity_about">关于</string>
     <string name="title_activity_search">搜索</string>
     <string name="MOVIE_DB_API_KEY">957e5740ac3a4fbe6c5046369fa0f815</string>
+    <string name="select_genre">分类</string>
+    <string name="no_category_content">当前没有符合该分类的内容。</string>
 </resources>
 

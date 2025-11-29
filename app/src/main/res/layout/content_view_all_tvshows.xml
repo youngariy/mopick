@@ -30,7 +30,7 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="카테고리"
+                android:text="@string/select_genre"
                 android:textColor="@color/colorMovieDetailTextPrimary"
                 android:textSize="14sp"
                 android:minHeight="36dp"
@@ -56,6 +56,18 @@
             android:layout_marginRight="4dp" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_view_empty_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/no_category_content"
+        android:textColor="@color/colorMovieDetailTextPrimary"
+        android:textSize="14sp"
+        android:visibility="gone" />
 
     <!--<fr.castorflex.android.smoothprogressbar.SmoothProgressBar xmlns:android="http://schemas.android.com/apk/res/android"-->
         <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
