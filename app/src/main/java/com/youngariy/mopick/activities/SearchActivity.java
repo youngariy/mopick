@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +67,14 @@ public class SearchActivity extends AppCompatActivity {
         if (mQuery == null || mQuery.trim().isEmpty()) finish();
 
         setTitle(mQuery);
+
+        // 상단바 색상 설정
+        Window window = getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorMovieDetailBackground));
+        WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(window, window.getDecorView());
+        if (insetsController != null) {
+            insetsController.setAppearanceLightStatusBars(false);
+        }
 
 //        mSmoothProgressBar = (SmoothProgressBar) findViewById(R.id.smooth_progress_bar);
         mEmptyTextView = (TextView) findViewById(R.id.text_view_empty_search);

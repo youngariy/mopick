@@ -94,6 +94,7 @@ public class TVShowDetailActivity extends AppCompatActivity {
     private int mBackdropWidth;
     private ProgressBar mBackdropProgressBar;
     private TextView mTitleTextView;
+    private TextView mTitleContentTextView;
     private TextView mGenreTextView;
     private TextView mYearTextView;
     private ImageButton mBackImageButton;
@@ -194,6 +195,7 @@ public class TVShowDetailActivity extends AppCompatActivity {
         mBackdropProgressBar.setVisibility(View.GONE);
 
         mTitleTextView = (TextView) findViewById(R.id.text_view_title_tv_show_detail);
+        mTitleContentTextView = (TextView) findViewById(R.id.text_view_title_content_tv_show_detail);
         mGenreTextView = (TextView) findViewById(R.id.text_view_genre_tv_show_detail);
         mYearTextView = (TextView) findViewById(R.id.text_view_year_tv_show_detail);
 
@@ -376,10 +378,15 @@ public class TVShowDetailActivity extends AppCompatActivity {
                         })
                         .into(mBackdropImageView);
 
-                if (response.body().getName() != null)
+                if (response.body().getName() != null) {
                     mTitleTextView.setText(response.body().getName());
-                else
+                    mTitleContentTextView.setText(response.body().getName());
+                    mTitleContentTextView.setVisibility(View.VISIBLE);
+                } else {
                     mTitleTextView.setText("");
+                    mTitleContentTextView.setText("");
+                    mTitleContentTextView.setVisibility(View.GONE);
+                }
 
                 setGenres(response.body().getGenres());
 
