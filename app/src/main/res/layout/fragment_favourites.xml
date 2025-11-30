@@ -3,21 +3,67 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
     android:orientation="vertical"
     android:background="@color/colorMovieDetailBackground"
     android:paddingTop="12dp"
     android:paddingBottom="20dp">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout_fav"
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggle_fav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabIndicatorColor="@color/colorPrimary"
-        app:tabSelectedTextColor="@color/colorPrimary"
-        app:tabTextColor="@color/colorSubtleText" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
+        app:singleSelection="true"
+        app:selectionRequired="true"
+        app:checkedButton="@+id/btn_fav_movies">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager_fav"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_fav_movies"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:text="@string/movies"
+            android:textAllCaps="false"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            app:iconPadding="0dp"
+            app:cornerRadius="0dp"
+            app:rippleColor="@android:color/transparent"
+            app:backgroundTint="@color/fav_toggle_bg_selector"
+            app:strokeColor="@color/fav_toggle_stroke_selector"
+            app:strokeWidth="1dp"
+            android:textColor="@color/fav_toggle_text_selector" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_fav_tv"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:text="@string/tv_shows"
+            android:textAllCaps="false"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            app:iconPadding="0dp"
+            app:cornerRadius="0dp"
+            app:rippleColor="@android:color/transparent"
+            app:backgroundTint="@color/fav_toggle_bg_selector"
+            app:strokeColor="@color/fav_toggle_stroke_selector"
+            app:strokeWidth="1dp"
+            android:textColor="@color/fav_toggle_text_selector" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <FrameLayout
+        android:id="@+id/container_fav"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
