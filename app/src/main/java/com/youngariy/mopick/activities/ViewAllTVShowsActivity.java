@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
 import androidx.appcompat.widget.PopupMenu;
@@ -60,6 +61,7 @@ public class ViewAllTVShowsActivity extends AppCompatActivity {
     private Integer mSelectedGenreId = null;
     private MaterialButton mGenreButton;
     private List<Genre> mGenres;
+    private TextView mEmptyStateTextView;
 
     // 원본 데이터 저장
     private List<TVShowBrief> mOriginalTVShows = new ArrayList<>();
@@ -69,6 +71,7 @@ public class ViewAllTVShowsActivity extends AppCompatActivity {
     private boolean loading = true;
     private int previousTotal = 0;
     private int visibleThreshold = 5;
+    private boolean mHasLoadedAtLeastOnce = false;
 
     private Call<GenresList> mGenresListCall;
     private Call<AiringTodayTVShowsResponse> mAiringTodayTVShowsCall;
@@ -112,6 +115,7 @@ public class ViewAllTVShowsActivity extends AppCompatActivity {
 
         mRecyclerView = findViewById(R.id.recycler_view_view_all);
         mGenreButton = findViewById(R.id.button_genre_filter);
+        mEmptyStateTextView = findViewById(R.id.text_view_empty_state);
         mTVShows = new ArrayList<>();
         mTVShowsAdapter = new TVShowBriefsSmallAdapter(this, mTVShows);
         mRecyclerView.setAdapter(mTVShowsAdapter);
@@ -215,7 +219,7 @@ public class ViewAllTVShowsActivity extends AppCompatActivity {
                 }
             }
         } else {
-            mGenreButton.setText("카테고리");
+            mGenreButton.setText(getString(R.string.select_genre));
         }
 
         mGenreButton.setOnClickListener(v -> {
@@ -251,6 +255,13 @@ public class ViewAllTVShowsActivity extends AppCompatActivity {
             }
         }
         mTVShowsAdapter.notifyDataSetChanged();
+        updateEmptyState();
+    }
+
+    private void updateEmptyState() {
+        if (mEmptyStateTextView == null) return;
+        boolean showEmpty = mHasLoadedAtLeastOnce && mTVShows.isEmpty();
+        mEmptyStateTextView.setVisibility(showEmpty ? View.VISIBLE : View.GONE);
     }
 
     private void loadTVShows(String tvShowType) { // Changed parameter to String
@@ -276,6 +287,7 @@ public class ViewAllTVShowsActivity extends AppCompatActivity {
                         if (tvShowBrief != null && tvShowBrief.getName() != null && tvShowBrief.getPosterPath() != null)
                             mOriginalTVShows.add(tvShowBrief);
                     }
+                    mHasLoadedAtLeastOnce = true;
                     applyGenreFilter();
                     if (response.body().getPage() == response.body().getTotalPages()) pagesOver = true;
                     else presentPage++;
@@ -302,6 +314,7 @@ public class ViewAllTVShowsActivity extends AppCompatActivity {
                         if (tvShowBrief != null && tvShowBrief.getName() != null && tvShowBrief.getPosterPath() != null)
                             mOriginalTVShows.add(tvShowBrief);
                     }
+                    mHasLoadedAtLeastOnce = true;
                     applyGenreFilter();
                     if (response.body().getPage() == response.body().getTotalPages()) pagesOver = true;
                     else presentPage++;
@@ -328,6 +341,7 @@ public class ViewAllTVShowsActivity extends AppCompatActivity {
                         if (tvShowBrief != null && tvShowBrief.getName() != null && tvShowBrief.getPosterPath() != null)
                             mOriginalTVShows.add(tvShowBrief);
                     }
+                    mHasLoadedAtLeastOnce = true;
                     applyGenreFilter();
                     if (response.body().getPage() == response.body().getTotalPages()) pagesOver = true;
                     else presentPage++;
@@ -354,6 +368,7 @@ public class ViewAllTVShowsActivity extends AppCompatActivity {
                         if (tvShowBrief != null && tvShowBrief.getName() != null && tvShowBrief.getPosterPath() != null)
                             mOriginalTVShows.add(tvShowBrief);
                     }
+                    mHasLoadedAtLeastOnce = true;
                     applyGenreFilter();
                     if (response.body().getPage() == response.body().getTotalPages()) pagesOver = true;
                     else presentPage++;

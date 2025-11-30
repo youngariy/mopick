@@ -36,10 +36,11 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean doubleBackToExitPressedOnce;
     private Toolbar mToolbar;
-    private com.google.android.material.bottomnavigation.BottomNavigationView mBottomNavigation;
+    private BottomNavigationView mBottomNavigation;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private String currentLanguage;
+    private int currentTabId = -1;
 
     private BottomNavigationView.OnItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
@@ -48,16 +49,19 @@ public class MainActivity extends AppCompatActivity {
                 setTitle(R.string.movies);
                 applyMoviesChrome();
                 setFragment(new MoviesFragment());
+                currentTabId = R.id.nav_movies;
                 return true;
             case R.id.nav_tv_shows:
                 setTitle(R.string.tv_shows);
                 applyMoviesChrome();
                 setFragment(new TVShowsFragment());
+                currentTabId = R.id.nav_tv_shows;
                 return true;
             case R.id.nav_favorites:
                 setTitle(R.string.favorites);
                 applyMoviesChrome();
                 setFragment(new FavouritesFragment());
+                currentTabId = R.id.nav_favorites;
                 return true;
         }
         return false;
@@ -79,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mNavigationView = findViewById(R.id.nav_view);
-        
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
@@ -88,28 +92,16 @@ public class MainActivity extends AppCompatActivity {
         mNavigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_movies) {
-                setTitle(R.string.movies);
-                applyMoviesChrome();
-                setFragment(new MoviesFragment());
-                mDrawerLayout.closeDrawers();
-                // 하단 바도 동기화
                 mBottomNavigation.setSelectedItemId(R.id.nav_movies);
+                mDrawerLayout.closeDrawers();
                 return true;
             } else if (id == R.id.nav_tv_shows) {
-                setTitle(R.string.tv_shows);
-                applyMoviesChrome();
-                setFragment(new TVShowsFragment());
-                mDrawerLayout.closeDrawers();
-                // 하단 바도 동기화
                 mBottomNavigation.setSelectedItemId(R.id.nav_tv_shows);
+                mDrawerLayout.closeDrawers();
                 return true;
             } else if (id == R.id.nav_favorites) {
-                setTitle(R.string.favorites);
-                applyMoviesChrome();
-                setFragment(new FavouritesFragment());
-                mDrawerLayout.closeDrawers();
-                // 하단 바도 동기화
                 mBottomNavigation.setSelectedItemId(R.id.nav_favorites);
+                mDrawerLayout.closeDrawers();
                 return true;
             } else if (id == R.id.nav_settings) {
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
@@ -128,10 +120,12 @@ public class MainActivity extends AppCompatActivity {
         mBottomNavigation = findViewById(R.id.bottom_navigation);
         mBottomNavigation.setOnItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        // Set default fragment
-        setTitle(R.string.movies);
-        applyMoviesChrome();
-        setFragment(new MoviesFragment());
+        if (savedInstanceState != null) {
+            currentTabId = savedInstanceState.getInt("current_tab_id", R.id.nav_movies);
+        } else {
+            currentTabId = R.id.nav_movies;
+        }
+        mBottomNavigation.setSelectedItemId(currentTabId);
     }
 
     @Override
@@ -139,8 +133,15 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         String savedLanguage = LocaleHelper.getLanguage(this);
         if (currentLanguage != null && !currentLanguage.equals(savedLanguage)) {
+            mBottomNavigation.setSelectedItemId(currentTabId);
             recreate();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("current_tab_id", currentTabId);
     }
 
     @Override
@@ -218,7 +219,3 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
-
-
-
-

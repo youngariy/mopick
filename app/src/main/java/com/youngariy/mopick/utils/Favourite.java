@@ -101,6 +101,23 @@ public class Favourite {
         return favMovies;
     }
 
+    public static List<Integer> getFavMovieIds(Context context) {
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+
+        List<Integer> ids = new ArrayList<>();
+        Cursor cursor = database.query(DatabaseHelper.FAV_MOVIES_TABLE_NAME, new String[]{DatabaseHelper.MOVIE_ID}, null, null, null, null, DatabaseHelper.ID + " DESC");
+        while (cursor.moveToNext()) {
+            int movieIdColumnIndex = cursor.getColumnIndex(DatabaseHelper.MOVIE_ID);
+            if (movieIdColumnIndex != -1) {
+                ids.add(cursor.getInt(movieIdColumnIndex));
+            }
+        }
+        cursor.close();
+        database.close();
+        return ids;
+    }
+
     //TV SHOWS
 
     public static void addTVShowToFav(Context context, Integer tvShowId, String posterPath, String name, Double voteAverage) {
@@ -182,6 +199,23 @@ public class Favourite {
         cursor.close();
         database.close();
         return favTVShows;
+    }
+
+    public static List<Integer> getFavTVShowIds(Context context) {
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+
+        List<Integer> ids = new ArrayList<>();
+        Cursor cursor = database.query(DatabaseHelper.FAV_TV_SHOWS_TABLE_NAME, new String[]{DatabaseHelper.TV_SHOW_ID}, null, null, null, null, DatabaseHelper.ID + " DESC");
+        while (cursor.moveToNext()) {
+            int tvShowIdColumnIndex = cursor.getColumnIndex(DatabaseHelper.TV_SHOW_ID);
+            if (tvShowIdColumnIndex != -1) {
+                ids.add(cursor.getInt(tvShowIdColumnIndex));
+            }
+        }
+        cursor.close();
+        database.close();
+        return ids;
     }
 
 }

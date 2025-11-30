@@ -1,4 +1,4 @@
-<resources>
+﻿<resources>
     <string name="app_name">Mopick</string>
     <string name="nav_tagline">Fresh picks, ready to binge</string>
 
@@ -86,5 +86,7 @@
     <string name="title_activity_about">AboutActivity</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="MOVIE_DB_API_KEY">957e5740ac3a4fbe6c5046369fa0f815</string>
-    <string name="select_genre">장르 선택</string>
+    <string name="select_genre">Category</string>
+    <string name="no_category_content">No content available for this category right now.</string>
 </resources>
+

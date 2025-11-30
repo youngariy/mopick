@@ -64,6 +64,7 @@ public class MoviesFragment extends Fragment {
     private MaterialButton mGenreButton;
     private List<Genre> mGenres;
     private Integer mSelectedGenreId = null;
+    private TextView mEmptyStateTextView;
 
     // 원본 데이터 저장
     private List<MovieBrief> mOriginalNowShowingMovies = new ArrayList<>();
@@ -72,6 +73,7 @@ public class MoviesFragment extends Fragment {
     private List<MovieBrief> mOriginalTopRatedMovies = new ArrayList<>();
 
     private MoviesViewModel mMoviesViewModel;
+    private boolean mHasLoadedAtLeastOnce = false;
 
     @Nullable
     @Override
@@ -111,6 +113,7 @@ public class MoviesFragment extends Fragment {
         mTopRatedRecyclerView = view.findViewById(R.id.recycler_view_top_rated);
 
         mGenreButton = view.findViewById(R.id.button_genre_filter);
+        mEmptyStateTextView = view.findViewById(R.id.text_view_empty_state);
     }
 
     private void initAdapters() {
@@ -165,33 +168,37 @@ public class MoviesFragment extends Fragment {
         });
 
         mMoviesViewModel.getNowShowingMovies().observe(getViewLifecycleOwner(), movies -> {
-            if (movies != null && !movies.isEmpty()) {
+            if (movies != null) {
                 mOriginalNowShowingMovies.clear();
                 mOriginalNowShowingMovies.addAll(movies);
+                mHasLoadedAtLeastOnce = true;
                 applyGenreFilter();
             }
         });
 
         mMoviesViewModel.getPopularMovies().observe(getViewLifecycleOwner(), movies -> {
-            if (movies != null && !movies.isEmpty()) {
+            if (movies != null) {
                 mOriginalPopularMovies.clear();
                 mOriginalPopularMovies.addAll(movies);
+                mHasLoadedAtLeastOnce = true;
                 applyGenreFilter();
             }
         });
 
         mMoviesViewModel.getUpcomingMovies().observe(getViewLifecycleOwner(), movies -> {
-            if (movies != null && !movies.isEmpty()) {
+            if (movies != null) {
                 mOriginalUpcomingMovies.clear();
                 mOriginalUpcomingMovies.addAll(movies);
+                mHasLoadedAtLeastOnce = true;
                 applyGenreFilter();
             }
         });
 
         mMoviesViewModel.getTopRatedMovies().observe(getViewLifecycleOwner(), movies -> {
-            if (movies != null && !movies.isEmpty()) {
+            if (movies != null) {
                 mOriginalTopRatedMovies.clear();
                 mOriginalTopRatedMovies.addAll(movies);
+                mHasLoadedAtLeastOnce = true;
                 applyGenreFilter();
             }
         });
@@ -200,6 +207,8 @@ public class MoviesFragment extends Fragment {
             if (isError) {
                 Toast.makeText(getContext(), R.string.error_loading_movies, Toast.LENGTH_SHORT).show();
                 mProgressBar.setVisibility(View.GONE);
+                mHasLoadedAtLeastOnce = true;
+                updateEmptyState();
             }
         });
     }
@@ -209,7 +218,7 @@ public class MoviesFragment extends Fragment {
 
         // 기본 선택 없음 (전체 표시)
         mSelectedGenreId = null;
-        mGenreButton.setText("카테고리");
+        mGenreButton.setText(getString(R.string.select_genre));
 
         mGenreButton.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), mGenreButton);
@@ -238,6 +247,7 @@ public class MoviesFragment extends Fragment {
         filterMovies(mOriginalUpcomingMovies, mUpcomingMovies, mUpcomingAdapter, mUpcomingLayout, mUpcomingRecyclerView);
         filterMovies(mOriginalTopRatedMovies, mTopRatedMovies, mTopRatedAdapter, mTopRatedLayout, mTopRatedRecyclerView);
         mProgressBar.setVisibility(View.GONE);
+        updateEmptyState();
     }
 
     private void filterMovies(List<MovieBrief> originalList, List<MovieBrief> filteredList, 
@@ -265,6 +275,17 @@ public class MoviesFragment extends Fragment {
             layout.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
         }
+    }
+
+    private void updateEmptyState() {
+        if (mEmptyStateTextView == null) return;
+        boolean anyVisible = !mNowShowingMovies.isEmpty() || !mPopularMovies.isEmpty()
+                || !mUpcomingMovies.isEmpty() || !mTopRatedMovies.isEmpty();
+        if (anyVisible) {
+            mEmptyStateTextView.setVisibility(View.GONE);
+            return;
+        }
+        mEmptyStateTextView.setVisibility(mHasLoadedAtLeastOnce ? View.VISIBLE : View.GONE);
     }
 }
 

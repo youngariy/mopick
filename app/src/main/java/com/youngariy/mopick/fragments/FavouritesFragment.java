@@ -4,20 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.youngariy.mopick.R;
-import com.youngariy.mopick.adapters.FavouritesUnifiedAdapter;
-import com.youngariy.mopick.network.movies.MovieBrief;
-import com.youngariy.mopick.network.tvshows.TVShowBrief;
-import com.youngariy.mopick.utils.Favourite;
-
-import java.util.List;
+import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.youngariy.mopick.fragments.FavouriteMoviesFragment;
+import com.youngariy.mopick.fragments.FavouriteTVShowsFragment;
 
 /**
  * Created by hitanshu on 10/8/17.
@@ -25,45 +20,43 @@ import java.util.List;
 
 public class FavouritesFragment extends Fragment {
 
-    private RecyclerView mFavRecyclerView;
-    private FavouritesUnifiedAdapter mFavAdapter;
-    private LinearLayout mEmptyLayout;
+    private MaterialButtonToggleGroup mToggleGroup;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favourites, container, false);
 
-        mFavRecyclerView = view.findViewById(R.id.recycler_view_fav_all);
-        mEmptyLayout = view.findViewById(R.id.layout_recycler_view_fav_empty);
+        mToggleGroup = view.findViewById(R.id.toggle_fav);
 
-        mFavAdapter = new FavouritesUnifiedAdapter(getContext());
-        mFavRecyclerView.setAdapter(mFavAdapter);
-        mFavRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        Fragment current = getChildFragmentManager().findFragmentById(R.id.container_fav);
+        if (current == null) {
+            mToggleGroup.check(R.id.btn_fav_movies);
+            showFragment(new FavouriteMoviesFragment());
+        } else if (current instanceof FavouriteTVShowsFragment) {
+            mToggleGroup.check(R.id.btn_fav_tv);
+        } else {
+            mToggleGroup.check(R.id.btn_fav_movies);
+        }
 
-        loadFavourites();
+        mToggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (!isChecked) {
+                return;
+            }
+            if (checkedId == R.id.btn_fav_movies) {
+                showFragment(new FavouriteMoviesFragment());
+            } else if (checkedId == R.id.btn_fav_tv) {
+                showFragment(new FavouriteTVShowsFragment());
+            }
+        });
 
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        loadFavourites();
-    }
-
-    private void loadFavourites() {
-        List<MovieBrief> favMovies = Favourite.getFavMovieBriefs(getContext());
-        List<TVShowBrief> favTVShows = Favourite.getFavTVShowBriefs(getContext());
-
-        if (favMovies.isEmpty() && favTVShows.isEmpty()) {
-            mEmptyLayout.setVisibility(View.VISIBLE);
-            mFavRecyclerView.setVisibility(View.GONE);
-        } else {
-            mEmptyLayout.setVisibility(View.GONE);
-            mFavRecyclerView.setVisibility(View.VISIBLE);
-            mFavAdapter.setItems(favMovies, favTVShows);
-        }
+    private void showFragment(Fragment fragment) {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.container_fav, fragment);
+        transaction.commit();
     }
 }
 

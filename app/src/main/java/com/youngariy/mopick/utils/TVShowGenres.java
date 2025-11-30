@@ -12,6 +12,7 @@ import java.util.List;
 public class TVShowGenres {
 
     private static HashMap<Integer, String> genresMap;
+    private static List<Genre> cachedGenres;
 
     public static boolean isGenresListLoaded() {
         return (genresMap != null);
@@ -19,10 +20,15 @@ public class TVShowGenres {
 
     public static void loadGenresList(List<Genre> genres) {
         if (genres == null) return;
+        cachedGenres = genres;
         genresMap = new HashMap<>();
         for (Genre genre : genres) {
             genresMap.put(genre.getId(), genre.getGenreName());
         }
+    }
+
+    public static List<Genre> getGenresList() {
+        return cachedGenres;
     }
 
     public static String getGenreName(Integer genreId) {

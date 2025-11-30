@@ -96,6 +96,7 @@ public class TVShowsFragment extends Fragment {
     private MaterialButton mGenreButton;
     private List<Genre> mGenres;
     private Integer mSelectedGenreId = null;
+    private TextView mEmptyStateTextView;
 
     // 원본 데이터 저장
     private List<TVShowBrief> mOriginalAiringTodayTVShows = new ArrayList<>();
@@ -133,6 +134,7 @@ public class TVShowsFragment extends Fragment {
         mTopRatedRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_top_rated);
 
         mGenreButton = view.findViewById(R.id.button_genre_filter);
+        mEmptyStateTextView = view.findViewById(R.id.text_view_empty_state);
 
         mAiringTodayTVShows = new ArrayList<>();
         mOnTheAirTVShows = new ArrayList<>();
@@ -286,6 +288,8 @@ public class TVShowsFragment extends Fragment {
     private void loadFragment() {
 
         if (TVShowGenres.isGenresListLoaded()) {
+            mGenres = TVShowGenres.getGenresList();
+            setupGenreButton();
             loadAiringTodayTVShows();
             loadOnTheAirTVShows();
             loadPopularTVShows();
@@ -297,15 +301,22 @@ public class TVShowsFragment extends Fragment {
             mGenresListCall = apiService.getTVShowGenresList(getResources().getString(R.string.MOVIE_DB_API_KEY), language);
             mGenresListCall.enqueue(new Callback<GenresList>() {
                 @Override
-                public void onResponse(Call<GenresList> call, Response<GenresList> response) {
-                    if (!response.isSuccessful()) {
-                        mGenresListCall = call.clone();
-                        mGenresListCall.enqueue(this);
-                        return;
-                    }
+            public void onResponse(Call<GenresList> call, Response<GenresList> response) {
+                if (!response.isSuccessful()) {
+                    mGenresListCall = call.clone();
+                    mGenresListCall.enqueue(this);
+                    return;
+                }
 
-                    if (response.body() == null) return;
-                    if (response.body().getGenres() == null) return;
+                if (response.body() == null || response.body().getGenres() == null) {
+                    mGenres = new ArrayList<>();
+                    setupGenreButton();
+                    loadAiringTodayTVShows();
+                    loadOnTheAirTVShows();
+                    loadPopularTVShows();
+                    loadTopRatedTVShows();
+                    return;
+                }
 
                     TVShowGenres.loadGenresList(response.body().getGenres());
                     mGenres = response.body().getGenres();
@@ -339,8 +350,12 @@ public class TVShowsFragment extends Fragment {
                     return;
                 }
 
-                if (response.body() == null) return;
-                if (response.body().getResults() == null) return;
+                if (response.body() == null || response.body().getResults() == null) {
+                    mAiringTodaySectionLoaded = true;
+                    applyGenreFilter();
+                    checkAllDataLoaded();
+                    return;
+                }
 
                 mAiringTodaySectionLoaded = true;
                 mOriginalAiringTodayTVShows.clear();
@@ -354,7 +369,9 @@ public class TVShowsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<AiringTodayTVShowsResponse> call, Throwable t) {
-
+                mAiringTodaySectionLoaded = true;
+                applyGenreFilter();
+                checkAllDataLoaded();
             }
         });
     }
@@ -373,8 +390,12 @@ public class TVShowsFragment extends Fragment {
                     return;
                 }
 
-                if (response.body() == null) return;
-                if (response.body().getResults() == null) return;
+                if (response.body() == null || response.body().getResults() == null) {
+                    mOnTheAirSectionLoaded = true;
+                    applyGenreFilter();
+                    checkAllDataLoaded();
+                    return;
+                }
 
                 mOnTheAirSectionLoaded = true;
                 mOriginalOnTheAirTVShows.clear();
@@ -388,7 +409,9 @@ public class TVShowsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<OnTheAirTVShowsResponse> call, Throwable t) {
-
+                mOnTheAirSectionLoaded = true;
+                applyGenreFilter();
+                checkAllDataLoaded();
             }
         });
     }
@@ -407,8 +430,12 @@ public class TVShowsFragment extends Fragment {
                     return;
                 }
 
-                if (response.body() == null) return;
-                if (response.body().getResults() == null) return;
+                if (response.body() == null || response.body().getResults() == null) {
+                    mPopularSectionLoaded = true;
+                    applyGenreFilter();
+                    checkAllDataLoaded();
+                    return;
+                }
 
                 mPopularSectionLoaded = true;
                 mOriginalPopularTVShows.clear();
@@ -422,7 +449,9 @@ public class TVShowsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<PopularTVShowsResponse> call, Throwable t) {
-
+                mPopularSectionLoaded = true;
+                applyGenreFilter();
+                checkAllDataLoaded();
             }
         });
     }
@@ -441,8 +470,12 @@ public class TVShowsFragment extends Fragment {
                     return;
                 }
 
-                if (response.body() == null) return;
-                if (response.body().getResults() == null) return;
+                if (response.body() == null || response.body().getResults() == null) {
+                    mTopRatedSectionLoaded = true;
+                    applyGenreFilter();
+                    checkAllDataLoaded();
+                    return;
+                }
 
                 mTopRatedSectionLoaded = true;
                 mOriginalTopRatedTVShows.clear();
@@ -456,7 +489,9 @@ public class TVShowsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<TopRatedTVShowsResponse> call, Throwable t) {
-
+                mTopRatedSectionLoaded = true;
+                applyGenreFilter();
+                checkAllDataLoaded();
             }
         });
     }
@@ -472,7 +507,7 @@ public class TVShowsFragment extends Fragment {
 
         // 기본 선택 없음 (전체 표시)
         mSelectedGenreId = null;
-        mGenreButton.setText("카테고리");
+        mGenreButton.setText(getString(R.string.select_genre));
 
         mGenreButton.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), mGenreButton);
@@ -500,6 +535,8 @@ public class TVShowsFragment extends Fragment {
         filterTVShows(mOriginalOnTheAirTVShows, mOnTheAirTVShows, mOnTheAirAdapter, mOnTheAirLayout, mOnTheAirRecyclerView);
         filterTVShows(mOriginalPopularTVShows, mPopularTVShows, mPopularAdapter, mPopularLayout, mPopularRecyclerView);
         filterTVShows(mOriginalTopRatedTVShows, mTopRatedTVShows, mTopRatedAdapter, mTopRatedLayout, mTopRatedRecyclerView);
+        mProgressBar.setVisibility(View.GONE);
+        updateEmptyState();
     }
 
     private void filterTVShows(List<TVShowBrief> originalList, List<TVShowBrief> filteredList,
@@ -527,6 +564,19 @@ public class TVShowsFragment extends Fragment {
             layout.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
         }
+    }
+
+    private void updateEmptyState() {
+        boolean anyVisible = !mAiringTodayTVShows.isEmpty() || !mOnTheAirTVShows.isEmpty()
+                || !mPopularTVShows.isEmpty() || !mTopRatedTVShows.isEmpty();
+        if (anyVisible) {
+            mEmptyStateTextView.setVisibility(View.GONE);
+            return;
+        }
+
+        boolean allSectionsLoaded = mAiringTodaySectionLoaded && mOnTheAirSectionLoaded
+                && mPopularSectionLoaded && mTopRatedSectionLoaded;
+        mEmptyStateTextView.setVisibility(allSectionsLoaded ? View.VISIBLE : View.GONE);
     }
 }
 
