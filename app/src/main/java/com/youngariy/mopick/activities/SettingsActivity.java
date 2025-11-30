@@ -16,6 +16,7 @@ import com.youngariy.mopick.utils.LocaleHelper;
 public class SettingsActivity extends AppCompatActivity {
 
     private CardView changeLanguageCardView;
+    private CardView appInfoCardView;
     private TextView currentLanguageTextView;
 
     @Override
@@ -42,6 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void initViews() {
         changeLanguageCardView = findViewById(R.id.card_view_change_language);
+        appInfoCardView = findViewById(R.id.card_view_app_info);
         currentLanguageTextView = findViewById(R.id.text_view_current_language);
     }
 
@@ -66,6 +68,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void initClickListeners() {
         changeLanguageCardView.setOnClickListener(v -> showLanguageDialog());
+        appInfoCardView.setOnClickListener(v -> {
+            Intent intent = new Intent(SettingsActivity.this, AboutActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void showLanguageDialog() {

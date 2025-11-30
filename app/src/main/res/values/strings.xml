@@ -88,5 +88,13 @@
     <string name="MOVIE_DB_API_KEY">957e5740ac3a4fbe6c5046369fa0f815</string>
     <string name="select_genre">Category</string>
     <string name="no_category_content">No content available for this category right now.</string>
+    <string name="recommend">추천</string>
+    <string name="pull_to_recommend">당겨서 추천받기</string>
+    <string name="recommending">추천 중...</string>
+    <string name="recommend_message_1">이보다 더 좋은건 없을 거에요!</string>
+    <string name="recommend_message_2">밥먹으면서 보기 딱이죠?</string>
+    <string name="recommend_message_3">이걸 아직 안보셨다구요?</string>
+    <string name="recommend_message_4">기다리고 있었어요!</string>
+    <string name="recommend_message_5">마음에 드실 거에요!</string>
 </resources>
 

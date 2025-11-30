@@ -108,11 +108,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 mDrawerLayout.closeDrawers();
                 return true;
-            } else if (id == R.id.nav_about) {
-                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
-                startActivity(intent);
-                mDrawerLayout.closeDrawers();
-                return true;
             }
             return false;
         });

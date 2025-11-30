@@ -93,6 +93,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private int mBackdropWidth;
     private ProgressBar mBackdropProgressBar;
     private TextView mTitleTextView;
+    private TextView mTitleContentTextView;
     private TextView mGenreTextView;
     private TextView mYearTextView;
     private ImageButton mBackImageButton;
@@ -190,6 +191,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         mBackdropProgressBar.setVisibility(View.GONE);
 
         mTitleTextView = (TextView) findViewById(R.id.text_view_title_movie_detail);
+        mTitleContentTextView = (TextView) findViewById(R.id.text_view_title_content_movie_detail);
         mGenreTextView = (TextView) findViewById(R.id.text_view_genre_movie_detail);
         mYearTextView = (TextView) findViewById(R.id.text_view_year_movie_detail);
 
@@ -370,10 +372,15 @@ public class MovieDetailActivity extends AppCompatActivity {
                         })
                         .into(mBackdropImageView);
 
-                if (response.body().getTitle() != null)
+                if (response.body().getTitle() != null) {
                     mTitleTextView.setText(response.body().getTitle());
-                else
+                    mTitleContentTextView.setText(response.body().getTitle());
+                    mTitleContentTextView.setVisibility(View.VISIBLE);
+                } else {
                     mTitleTextView.setText("");
+                    mTitleContentTextView.setText("");
+                    mTitleContentTextView.setVisibility(View.GONE);
+                }
 
                 setGenres(response.body().getGenres());
 
