@@ -67,6 +67,7 @@
     <string name="no_fav_tv_shows">没有收藏的电视节目</string>
 
     <string name="search_movies_tv_shows_people">搜索电影、电视节目、人物</string>
+    <string name="search_movies_tv_shows">搜索电影、电视节目</string>
     <string name="search">搜索</string>
     <string name="no_results_found">未找到结果</string>
     <string name="movie">电影</string>

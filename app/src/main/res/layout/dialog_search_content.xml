@@ -11,7 +11,7 @@
         android:id="@+id/edit_text_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/search_movies_tv_shows_people"
+        android:hint="@string/search_movies_tv_shows"
         android:textColor="@color/colorMovieDetailTextPrimary"
         android:textColorHint="@color/colorMovieDetailTextSecondary"
         android:textSize="16sp"

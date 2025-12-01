@@ -454,7 +454,7 @@ public class BriefThoughtsEditActivity extends AppCompatActivity {
         searchButton.setOnClickListener(v -> {
             String query = searchEditText.getText().toString().trim();
             if (query.isEmpty()) {
-                Toast.makeText(this, getString(R.string.search_movies_tv_shows_people), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.search_movies_tv_shows), Toast.LENGTH_SHORT).show();
                 return;
             }
             performSearch(query, searchResults, adapter, emptyTextView);
@@ -474,8 +474,15 @@ public class BriefThoughtsEditActivity extends AppCompatActivity {
                                SearchResultsAdapter adapter, TextView emptyTextView) {
         searchResults.clear();
         adapter.notifyDataSetChanged();
+        emptyTextView.setVisibility(View.GONE);
         
-        getLoaderManager().initLoader(1, null, new LoaderManager.LoaderCallbacks<SearchResponse>() {
+        // Destroy existing loader if it exists to allow re-search
+        LoaderManager loaderManager = getLoaderManager();
+        if (loaderManager.getLoader(1) != null) {
+            loaderManager.destroyLoader(1);
+        }
+        
+        loaderManager.initLoader(1, null, new LoaderManager.LoaderCallbacks<SearchResponse>() {
             @Override
             public Loader<SearchResponse> onCreateLoader(int id, Bundle args) {
                 return new SearchAsyncTaskLoader(BriefThoughtsEditActivity.this, query, "1");
@@ -495,6 +502,8 @@ public class BriefThoughtsEditActivity extends AppCompatActivity {
                     } else {
                         emptyTextView.setVisibility(View.GONE);
                     }
+                } else {
+                    emptyTextView.setVisibility(View.VISIBLE);
                 }
             }
 

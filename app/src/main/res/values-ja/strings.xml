@@ -67,6 +67,7 @@
     <string name="no_fav_tv_shows">お気に入りのTV番組がありません</string>
 
     <string name="search_movies_tv_shows_people">映画、TV番組、人物を検索</string>
+    <string name="search_movies_tv_shows">映画、TV番組を検索</string>
     <string name="search">検索</string>
     <string name="no_results_found">検索結果が見つかりません</string>
     <string name="movie">映画</string>
