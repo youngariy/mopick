@@ -49,6 +49,8 @@ import com.youngariy.mopick.network.videos.VideosResponse;
 import com.youngariy.mopick.network.watchproviders.WatchProvider;
 import com.youngariy.mopick.network.watchproviders.WatchProviderRegion;
 import com.youngariy.mopick.network.watchproviders.WatchProvidersResponse;
+import com.youngariy.mopick.utils.BriefThought;
+import com.youngariy.mopick.utils.BriefThoughtsHelper;
 import com.youngariy.mopick.utils.Constants;
 import com.youngariy.mopick.utils.Favourite;
 import com.youngariy.mopick.utils.LocaleHelper;
@@ -113,6 +115,7 @@ public class TVShowDetailActivity extends AppCompatActivity {
     private TextView mOriginCountryTextView;
     private TextView mNetworksTextView;
     private TextView mWatchProvidersTextView;
+    private com.google.android.material.button.MaterialButton mGoToThoughtsButton;
 
     private TextView mVideosTextView;
     private RecyclerView mVideosRecyclerView;
@@ -221,6 +224,29 @@ public class TVShowDetailActivity extends AppCompatActivity {
         mOriginCountryTextView = findViewById(R.id.text_view_origin_country_tv_show_detail);
         mNetworksTextView = findViewById(R.id.text_view_networks_tv_show_detail);
         mWatchProvidersTextView = findViewById(R.id.text_view_watch_providers_tv_show_detail);
+        mGoToThoughtsButton = findViewById(R.id.button_go_to_thoughts_tv_show_detail);
+        
+        // Check if thought already exists
+        BriefThought existingThought = BriefThoughtsHelper.getBriefThoughtByContent(this, mTVShowId, "tv_show");
+        if (existingThought != null) {
+            mGoToThoughtsButton.setText(R.string.view_my_thoughts);
+            mGoToThoughtsButton.setOnClickListener(v -> {
+                Intent intent = new Intent(TVShowDetailActivity.this, BriefThoughtsEditActivity.class);
+                intent.putExtra("thought_id", existingThought.getId());
+                startActivity(intent);
+            });
+        } else {
+            mGoToThoughtsButton.setText(R.string.go_to_thoughts);
+            mGoToThoughtsButton.setOnClickListener(v -> {
+                Intent intent = new Intent(TVShowDetailActivity.this, BriefThoughtsEditActivity.class);
+                intent.putExtra("content_id", mTVShowId);
+                intent.putExtra("content_type", "tv_show");
+                if (mTitleTextView.getText() != null) {
+                    intent.putExtra("content_title", mTitleTextView.getText().toString());
+                }
+                startActivity(intent);
+            });
+        }
 
         mVideosTextView = (TextView) findViewById(R.id.text_view_trailer_tv_show_detail);
         mVideosRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_trailers_tv_show_detail);

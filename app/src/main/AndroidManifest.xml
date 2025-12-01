@@ -73,6 +73,16 @@
             android:label="@string/recommend"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.BriefThoughtsActivity"
+            android:label="@string/title_activity_brief_thoughts"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.BriefThoughtsEditActivity"
+            android:label="@string/title_activity_brief_thoughts_edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

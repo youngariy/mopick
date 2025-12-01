@@ -47,6 +47,8 @@ import com.youngariy.mopick.network.videos.VideosResponse;
 import com.youngariy.mopick.network.watchproviders.WatchProvider;
 import com.youngariy.mopick.network.watchproviders.WatchProviderRegion;
 import com.youngariy.mopick.network.watchproviders.WatchProvidersResponse;
+import com.youngariy.mopick.utils.BriefThought;
+import com.youngariy.mopick.utils.BriefThoughtsHelper;
 import com.youngariy.mopick.utils.Constants;
 import com.youngariy.mopick.utils.Favourite;
 import com.youngariy.mopick.utils.LocaleHelper;
@@ -109,6 +111,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView mReleaseDateTextView;
     private TextView mRuntimeTextView;
     private TextView mWatchProvidersTextView;
+    private com.google.android.material.button.MaterialButton mGoToThoughtsButton;
 
     private TextView mTrailerTextView;
     private RecyclerView mTrailerRecyclerView;
@@ -214,6 +217,29 @@ public class MovieDetailActivity extends AppCompatActivity {
         mReleaseDateTextView = findViewById(R.id.text_view_release_date_movie_detail);
         mRuntimeTextView = findViewById(R.id.text_view_runtime_movie_detail);
         mWatchProvidersTextView = findViewById(R.id.text_view_watch_providers_movie_detail);
+        mGoToThoughtsButton = findViewById(R.id.button_go_to_thoughts_movie_detail);
+        
+        // Check if thought already exists
+        BriefThought existingThought = BriefThoughtsHelper.getBriefThoughtByContent(this, mMovieId, "movie");
+        if (existingThought != null) {
+            mGoToThoughtsButton.setText(R.string.view_my_thoughts);
+            mGoToThoughtsButton.setOnClickListener(v -> {
+                Intent intent = new Intent(MovieDetailActivity.this, BriefThoughtsEditActivity.class);
+                intent.putExtra("thought_id", existingThought.getId());
+                startActivity(intent);
+            });
+        } else {
+            mGoToThoughtsButton.setText(R.string.go_to_thoughts);
+            mGoToThoughtsButton.setOnClickListener(v -> {
+                Intent intent = new Intent(MovieDetailActivity.this, BriefThoughtsEditActivity.class);
+                intent.putExtra("content_id", mMovieId);
+                intent.putExtra("content_type", "movie");
+                if (mTitleTextView.getText() != null) {
+                    intent.putExtra("content_title", mTitleTextView.getText().toString());
+                }
+                startActivity(intent);
+            });
+        }
 
         mTrailerTextView = (TextView) findViewById(R.id.text_view_trailer_movie_detail);
         mTrailerRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_trailers_movie_detail);

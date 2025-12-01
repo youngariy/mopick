@@ -32,6 +32,15 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     private Context mContext;
     private List<SearchResult> mSearchResults;
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(SearchResult result, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
 
     public SearchResultsAdapter(Context mContext, List<SearchResult> mSearchResults) {
         this.mContext = mContext;
@@ -113,18 +122,23 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mSearchResults.get(getAdapterPosition()).getMediaType().equals("movie")) {
-                        Intent intent = new Intent(mContext, MovieDetailActivity.class);
-                        intent.putExtra(Constants.MOVIE_ID, mSearchResults.get(getAdapterPosition()).getId());
-                        mContext.startActivity(intent);
-                    } else if (mSearchResults.get(getAdapterPosition()).getMediaType().equals("tv")) {
-                        Intent intent = new Intent(mContext, TVShowDetailActivity.class);
-                        intent.putExtra(Constants.TV_SHOW_ID, mSearchResults.get(getAdapterPosition()).getId());
-                        mContext.startActivity(intent);
-                    } else if (mSearchResults.get(getAdapterPosition()).getMediaType().equals("person")) {
-                        Intent intent = new Intent(mContext, PersonDetailActivity.class);
-                        intent.putExtra(Constants.PERSON_ID, mSearchResults.get(getAdapterPosition()).getId());
-                        mContext.startActivity(intent);
+                    if (mListener != null) {
+                        mListener.onItemClick(mSearchResults.get(getAdapterPosition()), getAdapterPosition());
+                    } else {
+                        // Default behavior: navigate to detail page
+                        if (mSearchResults.get(getAdapterPosition()).getMediaType().equals("movie")) {
+                            Intent intent = new Intent(mContext, MovieDetailActivity.class);
+                            intent.putExtra(Constants.MOVIE_ID, mSearchResults.get(getAdapterPosition()).getId());
+                            mContext.startActivity(intent);
+                        } else if (mSearchResults.get(getAdapterPosition()).getMediaType().equals("tv")) {
+                            Intent intent = new Intent(mContext, TVShowDetailActivity.class);
+                            intent.putExtra(Constants.TV_SHOW_ID, mSearchResults.get(getAdapterPosition()).getId());
+                            mContext.startActivity(intent);
+                        } else if (mSearchResults.get(getAdapterPosition()).getMediaType().equals("person")) {
+                            Intent intent = new Intent(mContext, PersonDetailActivity.class);
+                            intent.putExtra(Constants.PERSON_ID, mSearchResults.get(getAdapterPosition()).getId());
+                            mContext.startActivity(intent);
+                        }
                     }
                 }
             });

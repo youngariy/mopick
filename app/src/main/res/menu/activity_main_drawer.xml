@@ -24,6 +24,11 @@
             android:icon="@mipmap/ic_favorite_black_24dp"
             android:iconTint="@color/colorSubtleText"
             android:title="@string/favorites" />
+        <item
+            android:id="@+id/nav_brief_thoughts"
+            android:icon="@drawable/ic_lightbulb_outline_24dp"
+            android:iconTint="@color/colorSubtleText"
+            android:title="@string/brief_thoughts" />
     </group>
 
     <group
