@@ -101,7 +101,7 @@
     <string name="status_completed">시청완료</string>
     <string name="status_watching_text">아직 보고 있어요...</string>
     <string name="status_completed_text">다봤어요!</string>
-    <string name="rating_text_format">5점 만점에 %d점 만점인 영화에요!</string>
+    <string name="rating_text_format">5점 만점에 %d점인 영화에요!</string>
     <string name="rating_question">영화가 얼마나 재미있었나요?</string>
     <string name="mood_question">영화를 보고난 기분은 어땠나요?</string>
     <string name="recommend_question">다른 사람에게 시청을 추천하고 싶나요?</string>
