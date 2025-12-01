@@ -103,6 +103,11 @@ public class MainActivity extends AppCompatActivity {
                 mBottomNavigation.setSelectedItemId(R.id.nav_favorites);
                 mDrawerLayout.closeDrawers();
                 return true;
+            } else if (id == R.id.nav_brief_thoughts) {
+                Intent intent = new Intent(MainActivity.this, BriefThoughtsActivity.class);
+                startActivity(intent);
+                mDrawerLayout.closeDrawers();
+                return true;
             } else if (id == R.id.nav_settings) {
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);

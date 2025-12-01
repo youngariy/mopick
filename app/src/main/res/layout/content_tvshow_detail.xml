@@ -215,6 +215,17 @@
             android:textStyle="bold"
             android:visibility="gone" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_go_to_thoughts_tv_show_detail"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/go_to_thoughts"
+            android:textColor="@color/colorMovieDetailTextPrimary" />
+
         <TextView
             android:id="@+id/text_view_trailer_tv_show_detail"
             android:layout_width="match_parent"

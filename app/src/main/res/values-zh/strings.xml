@@ -67,6 +67,7 @@
     <string name="no_fav_tv_shows">没有收藏的电视节目</string>
 
     <string name="search_movies_tv_shows_people">搜索电影、电视节目、人物</string>
+    <string name="search_movies_tv_shows">搜索电影、电视节目</string>
     <string name="search">搜索</string>
     <string name="no_results_found">未找到结果</string>
     <string name="movie">电影</string>
@@ -88,5 +89,45 @@
     <string name="MOVIE_DB_API_KEY">957e5740ac3a4fbe6c5046369fa0f815</string>
     <string name="select_genre">分类</string>
     <string name="no_category_content">当前没有符合该分类的内容。</string>
+    
+    <!-- Brief Thoughts -->
+    <string name="brief_thoughts">简短感想</string>
+    <string name="new_thought">新感想</string>
+    <string name="edit_thought">编辑感想</string>
+    <string name="no_thoughts">还没有感想</string>
+    <string name="content_title">内容标题</string>
+    <string name="status">状态</string>
+    <string name="status_watching">观看中</string>
+    <string name="status_completed">已看完</string>
+    <string name="status_watching_text">还在看...</string>
+    <string name="status_completed_text">看完了！</string>
+    <string name="rating_text_format">这是一部%d分（满分5分）的电影！</string>
+    <string name="rating_question">它有多有趣？</string>
+    <string name="mood_question">看完后的感受如何？</string>
+    <string name="recommend_question">您会向其他人推荐吗？</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="mood_happy">😊 有趣</string>
+    <string name="mood_touched">😢 感动</string>
+    <string name="mood_excited">😍 兴奋</string>
+    <string name="mood_surprised">😮 惊讶</string>
+    <string name="mood_funny">😂 好笑</string>
+    <string name="mood_thoughtful">🤔 深思</string>
+    <string name="mood_okay">😐 一般</string>
+    <string name="mood_boring">😴 无聊</string>
+    <string name="mood_tense">😨 紧张</string>
+    <string name="mood_calm">🌿 平静</string>
+    <string name="search_content">搜索内容</string>
+    <string name="go_to_thoughts">去写感想</string>
+    <string name="view_my_thoughts">查看我的感想</string>
+    <string name="recommend_yes_message">想推荐给别人的电影！</string>
+    <string name="recommend_no_message">不想推荐的电影...</string>
+    <string name="recommend_yes_text">想推荐给别人的电影！</string>
+    <string name="recommend_no_text">不想推荐的电影...</string>
+    <string name="save">保存</string>
+    <string name="edit">编辑</string>
+    <string name="delete">删除</string>
+    <string name="title_activity_brief_thoughts">简短感想</string>
+    <string name="title_activity_brief_thoughts_edit">编辑感想</string>
 </resources>
 

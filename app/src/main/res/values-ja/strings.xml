@@ -67,6 +67,7 @@
     <string name="no_fav_tv_shows">お気に入りのTV番組がありません</string>
 
     <string name="search_movies_tv_shows_people">映画、TV番組、人物を検索</string>
+    <string name="search_movies_tv_shows">映画、TV番組を検索</string>
     <string name="search">検索</string>
     <string name="no_results_found">検索結果が見つかりません</string>
     <string name="movie">映画</string>
@@ -88,5 +89,45 @@
     <string name="MOVIE_DB_API_KEY">957e5740ac3a4fbe6c5046369fa0f815</string>
     <string name="select_genre">カテゴリー</string>
     <string name="no_category_content">このカテゴリーに該当するコンテンツは現在ありません。</string>
+    
+    <!-- Brief Thoughts -->
+    <string name="brief_thoughts">短い感想</string>
+    <string name="new_thought">新しい感想</string>
+    <string name="edit_thought">感想を編集</string>
+    <string name="no_thoughts">まだ感想がありません</string>
+    <string name="content_title">コンテンツタイトル</string>
+    <string name="status">ステータス</string>
+    <string name="status_watching">視聴中</string>
+    <string name="status_completed">視聴完了</string>
+    <string name="status_watching_text">まだ見ています...</string>
+    <string name="status_completed_text">見終わりました！</string>
+    <string name="rating_text_format">5点満点中%d点の映画です！</string>
+    <string name="rating_question">どれくらい面白かったですか？</string>
+    <string name="mood_question">視聴後の気分はどうでしたか？</string>
+    <string name="recommend_question">他の人に視聴を勧めたいですか？</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+    <string name="mood_happy">😊 楽しかった</string>
+    <string name="mood_touched">😢 感動した</string>
+    <string name="mood_excited">😍 ときめいた</string>
+    <string name="mood_surprised">😮 驚いた</string>
+    <string name="mood_funny">😂 笑えた</string>
+    <string name="mood_thoughtful">🤔 考えさせられた</string>
+    <string name="mood_okay">😐 まあまあ</string>
+    <string name="mood_boring">😴 退屈だった</string>
+    <string name="mood_tense">😨 緊張した</string>
+    <string name="mood_calm">🌿 穏やかだった</string>
+    <string name="search_content">コンテンツを検索</string>
+    <string name="go_to_thoughts">感想を書く</string>
+    <string name="view_my_thoughts">私の感想を見る</string>
+    <string name="recommend_yes_message">他の人に推薦したい映画です！</string>
+    <string name="recommend_no_message">推薦したくない映画です...</string>
+    <string name="recommend_yes_text">他の人にも推薦したい映画です！</string>
+    <string name="recommend_no_text">推薦したくない映画です...</string>
+    <string name="save">保存</string>
+    <string name="edit">編集</string>
+    <string name="delete">削除</string>
+    <string name="title_activity_brief_thoughts">短い感想</string>
+    <string name="title_activity_brief_thoughts_edit">感想を編集</string>
 </resources>
 

@@ -67,6 +67,7 @@
     <string name="no_fav_tv_shows">즐겨찾기한 TV 프로그램이 없습니다</string>
 
     <string name="search_movies_tv_shows_people">영화, TV 프로그램, 인물 검색</string>
+    <string name="search_movies_tv_shows">영화, TV 프로그램 검색</string>
     <string name="search">검색</string>
     <string name="no_results_found">검색 결과가 없습니다</string>
     <string name="movie">영화</string>
@@ -88,5 +89,45 @@
     <string name="MOVIE_DB_API_KEY">957e5740ac3a4fbe6c5046369fa0f815</string>
     <string name="select_genre">카테고리</string>
     <string name="no_category_content">해당 카테고리에 알맞은 컨텐츠가 현재 없습니다.</string>
+    
+    <!-- Brief Thoughts -->
+    <string name="brief_thoughts">짧은 감상</string>
+    <string name="new_thought">새로운 감상</string>
+    <string name="edit_thought">감상 수정</string>
+    <string name="no_thoughts">아직 감상이 없습니다</string>
+    <string name="content_title">영화 제목</string>
+    <string name="status">상태</string>
+    <string name="status_watching">시청중</string>
+    <string name="status_completed">시청완료</string>
+    <string name="status_watching_text">아직 보고 있어요...</string>
+    <string name="status_completed_text">다봤어요!</string>
+    <string name="rating_text_format">5점 만점에 %d점인 영화에요!</string>
+    <string name="rating_question">영화가 얼마나 재미있었나요?</string>
+    <string name="mood_question">영화를 보고난 기분은 어땠나요?</string>
+    <string name="recommend_question">다른 사람에게 시청을 추천하고 싶나요?</string>
+    <string name="yes">네</string>
+    <string name="no">아니요</string>
+    <string name="mood_happy">😊 재밌었어요</string>
+    <string name="mood_touched">😢 감동했어요</string>
+    <string name="mood_excited">😍 설렜어요</string>
+    <string name="mood_surprised">😮 놀랐어요</string>
+    <string name="mood_funny">😂 웃겼어요</string>
+    <string name="mood_thoughtful">🤔 생각이 많아졌어요</string>
+    <string name="mood_okay">😐 그냥 그랬어요</string>
+    <string name="mood_boring">😴 지루했어요</string>
+    <string name="mood_tense">😨 긴장됐어요</string>
+    <string name="mood_calm">🌿 잔잔했어요</string>
+    <string name="search_content">영상 검색</string>
+    <string name="go_to_thoughts">짧은 감상하러 가기</string>
+    <string name="view_my_thoughts">나의 짧은 감상 보러가기</string>
+    <string name="recommend_yes_message">다른 사람에게 추천하고 싶은 영화에요!</string>
+    <string name="recommend_no_message">추천하고 싶지 않은 영화에요...</string>
+    <string name="recommend_yes_text">다른 사람들에게도 추천하고 싶은 영화에요!</string>
+    <string name="recommend_no_text">추천하고 싶지 않은 영화에요...</string>
+    <string name="save">저장</string>
+    <string name="edit">수정하기</string>
+    <string name="delete">삭제</string>
+    <string name="title_activity_brief_thoughts">짧은 감상</string>
+    <string name="title_activity_brief_thoughts_edit">감상 작성</string>
 </resources>
 

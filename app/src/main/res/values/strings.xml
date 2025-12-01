@@ -67,6 +67,7 @@
     <string name="no_fav_tv_shows">No Favourite TV Shows</string>
 
     <string name="search_movies_tv_shows_people">Search Movies, TV Shows, People</string>
+    <string name="search_movies_tv_shows">Search Movies, TV Shows</string>
     <string name="search">Search</string>
     <string name="no_results_found">No results found</string>
     <string name="movie">Movie</string>
@@ -96,5 +97,45 @@
     <string name="recommend_message_3">이걸 아직 안보셨다구요?</string>
     <string name="recommend_message_4">기다리고 있었어요!</string>
     <string name="recommend_message_5">마음에 드실 거에요!</string>
+    
+    <!-- Brief Thoughts -->
+    <string name="brief_thoughts">Brief Thoughts</string>
+    <string name="new_thought">New Thought</string>
+    <string name="edit_thought">Edit Thought</string>
+    <string name="no_thoughts">No thoughts yet</string>
+    <string name="content_title">Content Title</string>
+    <string name="status">Status</string>
+    <string name="status_watching">Watching</string>
+    <string name="status_completed">Completed</string>
+    <string name="status_watching_text">Still watching...</string>
+    <string name="status_completed_text">Finished watching!</string>
+    <string name="rating_text_format">A %d out of 5 star movie!</string>
+    <string name="rating_question">How entertaining was it?</string>
+    <string name="mood_question">How did you feel after watching?</string>
+    <string name="recommend_question">Would you recommend this to others?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="mood_happy">😊 Fun</string>
+    <string name="mood_touched">😢 Touched</string>
+    <string name="mood_excited">😍 Excited</string>
+    <string name="mood_surprised">😮 Surprised</string>
+    <string name="mood_funny">😂 Funny</string>
+    <string name="mood_thoughtful">🤔 Thoughtful</string>
+    <string name="mood_okay">😐 Okay</string>
+    <string name="mood_boring">😴 Boring</string>
+    <string name="mood_tense">😨 Tense</string>
+    <string name="mood_calm">🌿 Calm</string>
+    <string name="search_content">Search Content</string>
+    <string name="go_to_thoughts">Go to Thoughts</string>
+    <string name="view_my_thoughts">View My Thoughts</string>
+    <string name="recommend_yes_message">A movie I want to recommend to others!</string>
+    <string name="recommend_no_message">A movie I don\'t want to recommend...</string>
+    <string name="recommend_yes_text">A movie I want to recommend to others!</string>
+    <string name="recommend_no_text">A movie I don\'t want to recommend...</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="title_activity_brief_thoughts">Brief Thoughts</string>
+    <string name="title_activity_brief_thoughts_edit">Edit Thought</string>
 </resources>
 
