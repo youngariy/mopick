@@ -1,10 +1,10 @@
 # Mopick (모픽)
 
-[![Mopick](images/web_hi_res_512.png)](https://play.google.com/store/apps/details?id=com.youngariy.mopick)
+
 
 **Mopick**은 좋아하는 영화와 TV 프로그램을 발견하고, 추적하고, 자신만의 감상을 기록할 수 있도록 도와주는 안드로이드 애플리케이션입니다. The Movie Database (TMDb)의 방대한 데이터를 활용하여 다채로운 콘텐츠를 탐색하고 취향에 맞는 작품을 찾아보세요.
 
-[➡️ Google Play에서 다운로드](https://play.google.com/store/apps/details?id=com.youngariy.mopick)
+
 
 ---
 
