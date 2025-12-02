@@ -14,11 +14,19 @@ public class LocaleHelper {
     private static final String DEFAULT_LANGUAGE = "en";
 
     public static Context setLocale(Context context) {
+        if (context == null) {
+            return null;
+        }
+
         String language = getPersistedLanguage(context);
         return updateResources(context, language);
     }
 
     public static Context setLocale(Context context, String language) {
+        if (context == null) {
+            return null;
+        }
+
         persistLanguage(context, language);
         return updateResources(context, language);
     }
@@ -58,31 +66,59 @@ public class LocaleHelper {
     }
 
     private static String getPersistedLanguage(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        // Gracefully fall back to default when fragment/activity context is unavailable
+        if (context == null) {
+            return DEFAULT_LANGUAGE;
+        }
+
+        Context appContext = context.getApplicationContext() != null ? context.getApplicationContext() : context;
+        if (appContext == null) {
+            return DEFAULT_LANGUAGE;
+        }
+
+        SharedPreferences preferences = appContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         return preferences.getString(SELECTED_LANGUAGE, DEFAULT_LANGUAGE);
     }
 
     private static void persistLanguage(Context context, String language) {
-        SharedPreferences preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        if (context == null) {
+            return;
+        }
+
+        Context appContext = context.getApplicationContext() != null ? context.getApplicationContext() : context;
+        if (appContext == null) {
+            return;
+        }
+
+        SharedPreferences preferences = appContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(SELECTED_LANGUAGE, language);
         editor.apply();
     }
 
     private static Context updateResources(Context context, String language) {
+        if (context == null) {
+            return null;
+        }
+
+        Context baseContext = context.getApplicationContext() != null ? context.getApplicationContext() : context;
+        if (baseContext == null) {
+            return null;
+        }
+
         Locale locale = new Locale(language);
         Locale.setDefault(locale);
 
-        Resources resources = context.getResources();
+        Resources resources = baseContext.getResources();
         Configuration configuration = resources.getConfiguration();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             configuration.setLocale(locale);
-            return context.createConfigurationContext(configuration);
+            return baseContext.createConfigurationContext(configuration);
         } else {
             configuration.locale = locale;
             resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-            return context;
+            return baseContext;
         }
     }
 }
